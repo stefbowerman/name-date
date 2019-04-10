@@ -1,0 +1,7 @@
+.projectSummary {
+  max-width: 600px;
+}
+
+.projectSummaryCaption {
+  transition: opacity 300ms ease;
+}

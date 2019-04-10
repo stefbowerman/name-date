@@ -5,12 +5,12 @@ exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
   return new Promise((resolve, reject) => {
-    const blogPost = path.resolve('./src/templates/blog-post.js')
+    const projectTemplate = path.resolve('./src/templates/project.js')
     resolve(
       graphql(
         `
           {
-            allContentfulBlogPost {
+            allContentfulProject {
               edges {
                 node {
                   title
@@ -26,17 +26,53 @@ exports.createPages = ({ graphql, actions }) => {
           reject(result.errors)
         }
 
-        const posts = result.data.allContentfulBlogPost.edges
-        posts.forEach((post, index) => {
+        const projects = result.data.allContentfulProject.edges
+        projects.forEach((project, index) => {
           createPage({
-            path: `/blog/${post.node.slug}/`,
-            component: blogPost,
+            path: `/project/${project.node.slug}/`,
+            component: projectTemplate,
             context: {
-              slug: post.node.slug
+              slug: project.node.slug
             },
           })
         })
       })
     )
-  })
+  })  
+
+  // return new Promise((resolve, reject) => {
+  //   const blogPost = path.resolve('./src/templates/blog-post.js')
+  //   resolve(
+  //     graphql(
+  //       `
+  //         {
+  //           allContentfulBlogPost {
+  //             edges {
+  //               node {
+  //                 title
+  //                 slug
+  //               }
+  //             }
+  //           }
+  //         }
+  //         `
+  //     ).then(result => {
+  //       if (result.errors) {
+  //         console.log(result.errors)
+  //         reject(result.errors)
+  //       }
+
+  //       const posts = result.data.allContentfulBlogPost.edges
+  //       posts.forEach((post, index) => {
+  //         createPage({
+  //           path: `/blog/${post.node.slug}/`,
+  //           component: blogPost,
+  //           context: {
+  //             slug: post.node.slug
+  //           },
+  //         })
+  //       })
+  //     })
+  //   )
+  // })
 }

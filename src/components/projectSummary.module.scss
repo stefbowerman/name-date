@@ -1,0 +1,17 @@
+.projectSummary {
+  max-width: 600px;
+}
+
+.projectSummaryTitle {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  font-weight: bold;
+  font-size: calc(30px + 1.8vw);
+  text-transform: uppercase;
+  transition: opacity 300ms ease;
+}
+
+.projectSummaryCaption {
+  transition: opacity 300ms ease;
+}

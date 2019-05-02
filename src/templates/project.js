@@ -3,6 +3,8 @@ import Helmet from 'react-helmet'
 import get from 'lodash/get'
 import Img from 'gatsby-image'
 import Layout from '../components/layout'
+import { graphql } from 'gatsby'
+import styles from './project.module.scss'
 
 class ProjectTemplate extends React.Component {
   render() {
@@ -11,11 +13,20 @@ class ProjectTemplate extends React.Component {
 
     return (
       <Layout location={this.props.location} >
-        <div style={{ background: '#fff' }}>
-          <Helmet title={`${project.title} | ${siteTitle}`} />
-          <div className="wrapper">
-            <h1 className="section-headline">{project.title}</h1>
-            <img src={project.featuredImage.resize.src} />
+        <Helmet title={`${project.title} | ${siteTitle}`} />
+        <div className="wrapper">
+          <h1 className="section-headline">{project.title}</h1>
+          <div dangerouslySetInnerHTML={{
+            __html: project.description.childMarkdownRemark.html,
+          }} />
+          <div className={styles.projectImages}>
+            {project.images.map(image => {
+              return (
+                <div className={styles.projectImage}>
+                  <img src={image.resize.src} />
+                </div>
+              )
+            })}
           </div>
         </div>
       </Layout>
@@ -45,6 +56,18 @@ export const pageQuery = graphql`
       caption {
         childMarkdownRemark {
           html
+        }
+      }
+      description {
+        childMarkdownRemark {
+          html
+        }
+      }
+      images {
+        resize(width: 1180) {
+          src
+          width
+          height
         }
       }
     }

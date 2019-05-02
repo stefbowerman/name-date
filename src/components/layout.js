@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import base from './base.css'
+import base from './base.scss'
 import Container from './container'
 import Navigation from './navigation'
 

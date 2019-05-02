@@ -1,0 +1,17 @@
+.projectPreview {
+  max-width: 600px;
+}
+
+.projectPreviewTitle {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  font-weight: bold;
+  font-size: calc(30px + 1.8vw);
+  text-transform: uppercase;
+  transition: opacity 300ms ease;
+}
+
+.projectPreviewCaption {
+  transition: opacity 300ms ease;
+}

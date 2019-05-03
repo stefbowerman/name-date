@@ -6,9 +6,11 @@
   font-display: swap;
 }*/
 
+@import 'normalize.scss';
+
 body {
   /*font-family: "Avenir", Tahoma, Arial, Helvetica, sans-serif;*/
-  font-family: Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 0.857rem;
   line-height: 1.6;
   color: #222;
@@ -31,6 +33,35 @@ h3 {
 a {
   color: currentColor;
   text-decoration: none;
+}
+
+button {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 6px 20px;
+  cursor: pointer;
+}
+
+select {
+  appearance: none;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  border-radius: 0;
+  background-color: #fff;
+  border: 1px solid #000;
+  background: {
+    image: url('../../static/down-caret.png');
+    repeat: no-repeat;
+    size: 12px auto;
+    position: top 8px right 10px;
+  }
 }
 
 .wrapper {
@@ -70,3 +101,20 @@ a {
   .list-inline li {
     display: inline-block;
   }
+
+
+
+.productFrame {
+  padding: 40px 0 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 800px) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;      
+  }
+}

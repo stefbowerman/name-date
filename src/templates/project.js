@@ -20,9 +20,11 @@ class ProjectTemplate extends React.Component {
             __html: project.description.childMarkdownRemark.html,
           }} />
           <div className={styles.projectImages}>
-            {project.images.map(image => {
+            {project.images.map((image, index) => {
+              const key = `project-img-${index}`;
+
               return (
-                <div className={styles.projectImage}>
+                <div className={styles.projectImage} key={key}>
                   <img src={image.resize.src} />
                 </div>
               )

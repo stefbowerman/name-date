@@ -1,5 +1,6 @@
 .navigation {
   position: fixed;
+  z-index: 1000;
   top: 200px;
   top: 30vh;
   left: 30px;
@@ -11,5 +12,9 @@
 .navigationItem {
   a {
     color: currentColor;
+  }
+
+  & + & {
+    margin-top: 5px;
   }
 }

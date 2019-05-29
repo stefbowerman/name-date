@@ -1,6 +1,28 @@
-.feedItem {
-  max-width: 600px;
+.feed {
+  padding: 10vw 0;
 }
+
+.feedItem {
+  max-width: 100%;
+}
+
+.feedItemPortrait {
+  max-width: 600px;
+  max-width: 20vw;    
+}
+
+.feedItemLandscape {
+  max-width: 600px;
+  max-width: 50vw;
+}
+
+// .feedItem--portrait {
+
+// }
+
+// .feedItem--landscape {
+
+// }
 
 .feedItemTitle {
   position: fixed;
@@ -13,5 +35,6 @@
 }
 
 .feedItemCaption {
+  display: none;
   transition: opacity 300ms ease;
 }

@@ -26,19 +26,23 @@ class FeedItem extends React.Component {
   render() {
     const project = this.props.project
     const image = this.props.image
+    const orientation = (this.props.image.resize.height > this.props.image.resize.width ? 'Portrait' : 'Landscape')
+    let className = `${styles.feedItem} ${styles['feedItem' + orientation]}`;
 
     return (
-      <div className={styles.feedItem} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+      <div className={className} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         <Link to={`/project/${project.slug}`}>
           <img src={image.resize.src} alt={project.title}/>
         </Link>
-        <div
-          className={styles.feedItemCaption}
-          style={ { opacity: (this.state.isHovering ? 1 : 0) } }
-          dangerouslySetInnerHTML={{
-            __html: project.caption.childMarkdownRemark.html,
-          }}
-        />
+        {project.caption != undefined &&
+          <div
+            className={styles.feedItemCaption}
+            style={ { opacity: (this.state.isHovering ? 1 : 0) } }
+            dangerouslySetInnerHTML={{
+              __html: project.caption.childMarkdownRemark.html,
+            }}
+          />
+        }
         <div className={styles.feedItemTitle} style={ { opacity: (this.state.isHovering ? 1 : 0) } }>{project.title}</div>
       </div>
     )

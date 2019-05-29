@@ -1,10 +1,54 @@
-.projectImages {
+.projectWrapper {
+  width: 100%;
+  padding-bottom: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
+.projectContent {
+  position: relative;
+}
+
+.projectImages {
+  padding-left: 200px;
+  // white-space: nowrap;
+  // overflow: scroll;
+  height: 65vh;
+  height: calc(100vh - 200px);
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .projectImage {
-  width: 32%;
-  margin-right: 1%;
-  margin-bottom: 1%;
-  float: left;
+  height: 100%;
+  width: auto;
+  display: inline-block;
+  flex: 0 0 auto;
+  padding-right: 10px;
+
+  img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.projectCopy {
+  position: absolute;
+  right: 30px;
+  bottom: 0;
+  transform: translateY(100%);
+  padding-top: 9px;
+  font-size: 12px;
+
+  p {
+    margin: 0;
+
+    & + & {
+      margin-top: 5px;
+    }
+  }
 }

@@ -14,21 +14,25 @@ class ProjectTemplate extends React.Component {
     return (
       <Layout location={this.props.location} >
         <Helmet title={`${project.title} | ${siteTitle}`} />
-        <div className="wrapper">
-          <h1 className="section-headline">{project.title}</h1>
-          <div dangerouslySetInnerHTML={{
-            __html: project.description.childMarkdownRemark.html,
-          }} />
-          <div className={styles.projectImages}>
-            {project.images.map((image, index) => {
-              const key = `project-img-${index}`;
+        <div className={styles.projectWrapper}>
+          <div className={styles.projectContent}>
+            <div className={styles.projectImages}>
+              {project.images.map((image, index) => {
+                const key = `project-img-${index}`;
 
-              return (
-                <div className={styles.projectImage} key={key}>
-                  <img src={image.resize.src} />
-                </div>
-              )
-            })}
+                return (
+                  <div className={styles.projectImage} key={key}>
+                    <img src={image.resize.src} />
+                  </div>
+                )
+              })}
+            </div>
+            <div className={styles.projectCopy}>
+              <h1 className="section-headline" style={ {display: 'none'} }>{project.title}</h1>
+              <div dangerouslySetInnerHTML={{
+                __html: project.description.childMarkdownRemark.html,
+              }} />
+            </div>         
           </div>
         </div>
       </Layout>

@@ -65,9 +65,11 @@ select {
 }
 
 .wrapper {
-  width: calc(100% - 10vmin);
-  margin: 0 auto;
-  padding: 5vmin 0;
+  padding-left: 100px;
+
+  @media (min-width: 850px) {
+    padding-left: 200px;
+  }
 }
 
 /**

@@ -7,42 +7,6 @@ import Feed from '../components/feed';
 import FeedItem from '../components/feedItem';
 
 class RootIndex extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.w = window;
-    this.d = document;
-    this.documentElement = this.d.documentElement;
-    this.body = this.d.getElementsByTagName('body')[0];
-
-    this.updateDimensions = this.updateDimensions.bind(this)
-
-    const width = this.w.innerWidth || this.documentElement.clientWidth || this.body.clientWidth;
-    const height = this.w.innerHeight|| this.documentElement.clientHeight|| this.body.clientHeight;
-
-   
-    this.state = { width, height }
-    // console.log(this) 
-  }  
-  componentDidMount() {
-    console.log('mounted!')
-    // console.log(this)
-  }
-  updateDimensions() {
-    const width = this.w.innerWidth || this.documentElement.clientWidth || this.body.clientWidth;
-    const height = this.w.innerHeight|| this.documentElement.clientHeight|| this.body.clientHeight;
-
-    this.setState({width, height});
-  }
-  componentWillMount() {
-    this.updateDimensions();
-  }
-  componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions);
-  }
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
-  }  
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
     const feedItems = get(this, 'props.data.allContentfulFeed.edges')
@@ -51,7 +15,6 @@ class RootIndex extends React.Component {
       <Layout location={this.props.location} >
         <Helmet title={siteTitle} />
         <div className="wrapper">
-          <div>{this.state.height} x {this.state.width}</div>
           <Feed feedItems={feedItems} />
         </div>
       </Layout>

@@ -14,14 +14,14 @@ class FeedItem extends React.Component {
     this.onMouseLeave = this.onMouseLeave.bind(this)
   }
   onMouseEnter() {
-    this.setState({
-      isHovering: true
-    })
+    // this.setState({
+    //   isHovering: true
+    // })
   }
   onMouseLeave() {
-    this.setState({
-      isHovering: false
-    })
+    // this.setState({
+    //   isHovering: false
+    // })
   }
   render() {
     const project = this.props.project

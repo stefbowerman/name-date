@@ -19,7 +19,7 @@ class AboutPage extends React.Component {
           <div className={styles.aboutWrapper}>
             <div className={styles.aboutWidth}>
               <div className={styles.aboutContent}>
-                <img src={'../selfie.jpg'} style={ {width: '300px'} }/>
+                <img src={'../selfie.jpg'} style={ {maxWidth: '300px'} }/>
                 <div className={styles.aboutText}>
                   <p>From Los Angeles Creative.  Photo.  Film.</p>
                   <div className={styles.contact}>

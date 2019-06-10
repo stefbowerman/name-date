@@ -12,7 +12,7 @@
   height: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 50px;
+  padding: 0 25px;
 }
 
 .image {
@@ -35,6 +35,10 @@
 @media (min-width: 800px) {
   .product {
     flex-direction: row;
+  }
+
+  .imageWrap {
+    padding: 0 50px;
   }
 
   .image {

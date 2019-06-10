@@ -86,8 +86,6 @@ select {
 .shopWrapper {
   @extend .wrapper;
 
-  padding-right: 100px;
-
   @media (min-width: $screen-xl-min) {
     padding-right: 200px;
   }

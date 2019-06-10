@@ -1,7 +1,5 @@
 import React from 'react'
 import Link from 'gatsby-link'
-import Img from 'gatsby-image'
-import styles from './feedItem.module.scss'
 
 class FeedItem extends React.Component {
   constructor(props) {
@@ -14,36 +12,38 @@ class FeedItem extends React.Component {
     this.onMouseLeave = this.onMouseLeave.bind(this)
   }
   onMouseEnter() {
-    // this.setState({
-    //   isHovering: true
-    // })
+    this.setState({
+      isHovering: true
+    })
   }
   onMouseLeave() {
-    // this.setState({
-    //   isHovering: false
-    // })
+    this.setState({
+      isHovering: false
+    })
   }
   render() {
-    const project = this.props.project
-    const image = this.props.image
-    const orientation = (this.props.image.resize.height > this.props.image.resize.width ? 'Portrait' : 'Landscape')
-    let className = `${styles.feedItem} ${styles['feedItem' + orientation]}`;
+    const project = this.props.project;
+    const image = this.props.image;
+    const orientation = (this.props.image.resize.height > this.props.image.resize.width ? 'portrait' : 'landscape');
+    const ratio = (this.props.image.resize.height * 100 / this.props.image.resize.width).toFixed(2);
+    let className = `feedItem feedItem--${orientation}`;
 
     return (
       <div className={className} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         <Link to={`/project/${project.slug}`}>
-          <img src={image.resize.src} alt={project.title}/>
+          <div style={ {position: 'relative', height: 0, paddingBottom: `${ratio}%` } }>
+            <img src={image.resize.src} alt={project.title} style={ {position: 'absolute', top: 0, bottom: 0, left: 0, right: 0} }/>
+          </div>
         </Link>
-        {project.caption != undefined &&
+        {project.title != undefined &&
           <div
-            className={styles.feedItemCaption}
+            className="feedItemTitle"
             style={ { opacity: (this.state.isHovering ? 1 : 0) } }
             dangerouslySetInnerHTML={{
-              __html: project.caption.childMarkdownRemark.html,
+              __html: project.title
             }}
           />
         }
-        <div className={styles.feedItemTitle} style={ { opacity: (this.state.isHovering ? 1 : 0) } }>{project.title}</div>
       </div>
     )
   }

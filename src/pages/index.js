@@ -46,18 +46,6 @@ export const pageQuery = graphql`
             id
             title
             slug
-            featuredImage {
-              resize(width: 1180) {
-                src
-                width
-                height
-              }
-            }
-            caption {
-              childMarkdownRemark {
-                html
-              }
-            }
             description {
               childMarkdownRemark {
                 html

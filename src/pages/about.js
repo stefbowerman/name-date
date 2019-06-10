@@ -4,24 +4,38 @@ import Link from 'gatsby-link'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
 import Layout from "../components/layout"
+import BackButton from '../components/backButton';
+import styles from './about.module.scss';
 
-class AboutIndex extends React.Component {
+class AboutPage extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
 
     return (
       <Layout location={this.props.location} >
-        <Helmet title={siteTitle} />
-        <h1 className="section-headline">About</h1>
+        <Helmet title={ `About | ${siteTitle}` } />
+        <BackButton />
         <div className="wrapper">
-          About content here
+          <div className={styles.aboutWrapper}>
+            <div className={styles.aboutWidth}>
+              <div className={styles.aboutContent}>
+                <img src={'../selfie.jpg'} style={ {width: '300px'} }/>
+                <div className={styles.aboutText}>
+                  <p>From Los Angeles Creative.  Photo.  Film.</p>
+                  <div className={styles.contact}>
+                    <a href="mailto:steventraylor96@gmail.com" target="_blank">Contact</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </Layout>
     )
   }
 }
 
-export default AboutIndex
+export default AboutPage
 
 export const pageQuery = graphql`
   query AboutQuery {

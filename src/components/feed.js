@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from './feed.module.scss'
 import FeedItem from './feedItem.js'
 
 class Feed extends React.Component {
@@ -8,12 +7,10 @@ class Feed extends React.Component {
   }
   render() {
     return (
-      <div className={styles.feed}>
-        {this.props.feedItems.map((data) => {
+      <div className="feed">
+        {this.props.feedItems && this.props.feedItems.map((data) => {
           return (
-            <div className={styles.feedEntry} key={data.node.id}>
-              <FeedItem image={data.node.image} project={data.node.project} />
-            </div>
+            <FeedItem image={data.node.image} project={data.node.project} key={data.node.id} />
           )
         })}
       </div>

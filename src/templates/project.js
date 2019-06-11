@@ -5,6 +5,7 @@ import Img from 'gatsby-image'
 import Layout from '../components/layout'
 import BackButton from '../components/backButton';
 import YoutubeEmbed from '../components/youtubeEmbed';
+import ProjectImage from '../components/projectImage';
 import { graphql } from 'gatsby'
 import styles from './project.module.scss'
 
@@ -41,9 +42,7 @@ class ProjectTemplate extends React.Component {
                   <div className={styles.projectImages} onClick={(e) => { this.onClick(e); }}>
                     {project.images.map((image, index) => {
                       return (
-                        <div className={styles.projectImage} key={ `project-img-${index}` }>
-                          <img src={image.full.src} />
-                        </div>
+                        <ProjectImage image={image} key={ `project-img-${index}` } />
                       )
                     })}
                   </div>
@@ -87,7 +86,7 @@ export const pageQuery = graphql`
         }
       }
       images {
-        placeholder: resize(width:10) {
+        placeholder: resize(width:20) {
           src
           width
           height 

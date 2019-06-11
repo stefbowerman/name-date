@@ -36,13 +36,13 @@ class ProjectTemplate extends React.Component {
                     <YoutubeEmbed id={project.youtubeID} />
                   </div>
                 </div>
-              ) : (
+              ) : project.images && (
                 <div className={styles.projectImagesWrapper}>
                   <div className={styles.projectImages} onClick={(e) => { this.onClick(e); }}>
                     {project.images.map((image, index) => {
                       return (
                         <div className={styles.projectImage} key={ `project-img-${index}` }>
-                          <img src={image.resize.src} />
+                          <img src={image.full.src} />
                         </div>
                       )
                     })}
@@ -52,10 +52,15 @@ class ProjectTemplate extends React.Component {
             }
 
             <div className={styles.projectCopy} style={ {textAlign: (hasVideo ? 'center' : '')} }>
-              <h1 className={styles.projectTitle} >{project.title}</h1>
-              <div dangerouslySetInnerHTML={{
-                __html: project.description.childMarkdownRemark.html,
-              }} />
+              <h1 className={styles.projectTitle}>{project.title}</h1>
+              {
+                // Only render if there is a description
+                project.description && (              
+                  <div dangerouslySetInnerHTML={{
+                    __html: project.description.childMarkdownRemark.html,
+                  }} />
+                )
+              }
             </div>         
           </div>
         </div>
@@ -82,7 +87,12 @@ export const pageQuery = graphql`
         }
       }
       images {
-        resize(width: 1600) {
+        placeholder: resize(width:10) {
+          src
+          width
+          height 
+        }
+        full: resize(width: 1600) {
           src
           width
           height

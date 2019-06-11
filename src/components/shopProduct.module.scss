@@ -6,6 +6,10 @@
   flex-direction: column;
   text-align: center;
   position: relative;
+
+  @media (min-width: 800px) and (min-height: 700px) {
+    height: 100vh;
+  }
 }
 
 .imageWrap {
@@ -51,7 +55,7 @@
   .form {
     position: absolute;
     top: 50%;
-    right: 10%;
+    right: 3%;
     transform: translateY(-50%);
   }  
 }

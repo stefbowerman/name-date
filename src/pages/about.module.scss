@@ -26,9 +26,17 @@
 .aboutText {
   font-size: 120%;
 
+  p {
+    margin-bottom: 0;
+  }
+
   @media (min-width: 800px) {
     margin-left: 20px;
     margin-right: 20px;
+
+    p {
+      display: inline-block;
+    }    
   }
 }
 

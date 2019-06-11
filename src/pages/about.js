@@ -20,7 +20,8 @@ class AboutPage extends React.Component {
             <div className={styles.aboutWidth}>
               <div className={styles.aboutContent}>
                 <div className={styles.aboutText}>
-                  <p>From Los Angeles Creative.  Photo.  Film.</p>
+                  <p>From Los Angeles.&nbsp;</p>
+                  <p>Creative.  Photo.  Film.</p>
                   <div className={styles.contact}>
                     <a href="mailto:steventraylor96@gmail.com" target="_blank">Contact</a>
                   </div>

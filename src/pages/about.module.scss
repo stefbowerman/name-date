@@ -1,0 +1,49 @@
+.aboutWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.aboutWidth {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: 20%;
+}
+
+.aboutContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 80px 0;
+
+  @media (min-width: 800px) {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.aboutText {
+  font-size: 120%;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 800px) {
+    margin-left: 20px;
+    margin-right: 20px;
+
+    p {
+      display: inline-block;
+    }    
+  }
+}
+
+.contact {
+  @media (min-width: 800px) {
+    position: absolute;
+    top: 10%;
+    right: 20%;
+  }
+}

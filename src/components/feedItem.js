@@ -1,7 +1,5 @@
 import React from 'react'
 import Link from 'gatsby-link'
-import Img from 'gatsby-image'
-import styles from './feedItem.module.scss'
 
 class FeedItem extends React.Component {
   constructor(props) {
@@ -24,22 +22,28 @@ class FeedItem extends React.Component {
     })
   }
   render() {
-    const project = this.props.project
-    const image = this.props.image
+    const project = this.props.project;
+    const image = this.props.image;
+    const orientation = (this.props.image.resize.height > this.props.image.resize.width ? 'portrait' : 'landscape');
+    const ratio = (this.props.image.resize.height * 100 / this.props.image.resize.width).toFixed(2);
+    let className = `feedItem feedItem--${orientation}`;
 
     return (
-      <div className={styles.feedItem} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+      <div className={className} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         <Link to={`/project/${project.slug}`}>
-          <img src={image.resize.src} alt={project.title}/>
+          <div style={ {position: 'relative', height: 0, paddingBottom: `${ratio}%` } }>
+            <img src={image.resize.src} alt={project.title} style={ {position: 'absolute', top: 0, bottom: 0, left: 0, right: 0} }/>
+          </div>
         </Link>
-        <div
-          className={styles.feedItemCaption}
-          style={ { opacity: (this.state.isHovering ? 1 : 0) } }
-          dangerouslySetInnerHTML={{
-            __html: project.caption.childMarkdownRemark.html,
-          }}
-        />
-        <div className={styles.feedItemTitle} style={ { opacity: (this.state.isHovering ? 1 : 0) } }>{project.title}</div>
+        {project.title != undefined &&
+          <div
+            className="feedItemTitle"
+            style={ { opacity: (this.state.isHovering ? 1 : 0) } }
+            dangerouslySetInnerHTML={{
+              __html: project.title
+            }}
+          />
+        }
       </div>
     )
   }

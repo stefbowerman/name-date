@@ -1,0 +1,20 @@
+.button {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  padding: 25px;
+  height: 69px;
+  width: 78px;
+  font-size: 0;
+  background: {
+    image: url('../../static/left-arrow.png');
+    size: auto 17px;
+    position: center;
+    repeat: no-repeat;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}

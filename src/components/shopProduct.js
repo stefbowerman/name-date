@@ -1,13 +1,15 @@
 import React from 'react'
-import styles from './feedProduct.module.scss'
+import styles from './shopProduct.module.scss'
 
-class FeedProduct extends React.Component {
+class ShopProduct extends React.Component {
   render() {
 
     return (
-      <div className={styles.feedProduct}>
-        <img src={'gentrification-tee.png'} className={styles.feedProductImage} alt="Gentrification T-Shirt" />
-        <div className={styles.feedProductForm}>
+      <div className={styles.product}>
+        <div className={styles.imageWrap}>
+          <img src={'gentrification-tee.png'} className={styles.image} alt="Gentrification T-Shirt" />
+        </div>
+        <div className={styles.form}>
           <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <input type="hidden" name="cmd" value="_s-xclick" />
             <input type="hidden" name="hosted_button_id" value="U8EBJKLEAHDHS" />
@@ -33,4 +35,4 @@ class FeedProduct extends React.Component {
   }
 }
 
-export default FeedProduct
+export default ShopProduct

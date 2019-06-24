@@ -12,7 +12,7 @@ class ShopProduct extends React.Component {
         <div className={styles.form}>
           <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <input type="hidden" name="cmd" value="_s-xclick" />
-            <input type="hidden" name="hosted_button_id" value="U8EBJKLEAHDHS" />
+            <input type="hidden" name="hosted_button_id" value="2W9KUHD6BG4PJ" />
             <input type="hidden" name="on0" value="Size" />
             <h2 style={ {margin: '0 0 20px', fontSize: '1.5rem'} }>$40</h2>
             <p>

@@ -10,9 +10,6 @@ export default () => (
       <li className="navigationItem">
         <Link to="/about">About</Link>
       </li>
-      <li className="navigationItem">
-        <Link to="/shop">Shop</Link>
-      </li>      
     </ul>
   </nav>
 )

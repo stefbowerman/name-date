@@ -10,14 +10,18 @@ import ShopProduct from '../components/shopProduct'
 class ShopPage extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-
+    const products = get(this, 'props.data.allShopifyProduct.edges')
 
     return (
       <Layout location={this.props.location} >
         <Helmet title={ `Shop | ${siteTitle}` } />
         <BackButton />
         <div className="shopWrapper">
-          <ShopProduct />
+          {products.map(({ node }, i) => {
+            return (
+              <ShopProduct product={node} key={i} />
+            )
+          })}
         </div>
       </Layout>
     )
@@ -31,6 +35,48 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+      }
+    }
+    allShopifyProduct(
+      sort: {
+        fields: [createdAt]
+        order: DESC
+      }
+    ) {
+      edges {
+        node {
+          id
+          shopifyId
+          title
+          handle
+          descriptionHtml
+          availableForSale
+          images {
+            originalSrc
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+            }
+            maxVariantPrice {
+              amount
+            }
+          }
+          options {
+            name
+            values
+          }
+          variants {
+            shopifyId
+            title
+            availableForSale
+            price
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
       }
     }
   }

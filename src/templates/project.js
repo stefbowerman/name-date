@@ -10,15 +10,6 @@ import { graphql } from 'gatsby'
 import styles from './project.module.scss'
 
 class ProjectTemplate extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.onClick = this.onClick.bind(this)
-  }
-  onClick(e) {
-    console.log(e);
-    console.log('not working??');
-  }  
   render() {
     const project = get(this.props, 'data.contentfulProject')
     const siteTitle = get(this.props, 'data.site.siteMetadata.title')
@@ -39,7 +30,7 @@ class ProjectTemplate extends React.Component {
                 </div>
               ) : project.images && (
                 <div className={styles.projectImagesWrapper}>
-                  <div className={styles.projectImages} onClick={(e) => { this.onClick(e); }}>
+                  <div className={styles.projectImages}>
                     {project.images.map((image, index) => {
                       return (
                         <ProjectImage image={image} key={ `project-img-${index}` } />

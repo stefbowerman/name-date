@@ -12,14 +12,17 @@
     "gatsby-plugin-sass": "^2.0.11",
     "gatsby-plugin-sharp": "^2.0.33",
     "gatsby-source-contentful": "^2.0.2",
+    "gatsby-source-shopify": "^3.0.1",
     "gatsby-transformer-remark": "^2.1.6",
     "gatsby-transformer-sharp": "^2.0.6",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
-    "sharp": "^0.21.0"
+    "react-redux": "^7.1.0",
+    "sharp": "^0.21.0",
+    "shopify-buy": "^2.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

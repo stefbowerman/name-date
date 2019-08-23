@@ -85,8 +85,10 @@ class CartPage extends React.Component {
                       {this.props.lineItems.map((lineItem, i) => {
                         return (
                           <div key={i} className={styles.lineItem}>
-                            <div style={ {display: 'flex', justifyContent: 'space-between', padding: '10px 0'} }>
-                              <img src={lineItem.variant.image.src} style={ {width: 90, marginRight: 20} } />
+                            <div style={ {display: 'flex', flexDirection: 'row', padding: '10px 0'} }>
+                              <div>
+                                <img src={lineItem.variant.image.src} style={ {width: 90, marginRight: 20} } />
+                              </div>
                               <div style={ {flex: 1, padding: '0 20px'}}>
                                 <div style={ {fontWeight: 'bold', textTransform: 'uppercase'} }>{lineItem.title}</div>
                                 { Helpers.formatPrice(lineItem.variant.price) }

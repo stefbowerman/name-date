@@ -14,6 +14,7 @@ const mapStateToProps = state => {
     checkoutId: state.checkout.id,
     totalPrice: state.checkout.totalPrice,
     lineItems: state.checkout.lineItems,
+    lineItemsSubtotalPrice: state.checkout.lineItemsSubtotalPrice,
     checkoutUrl: state.checkout.webUrl,
   }
 
@@ -106,7 +107,7 @@ class CartPage extends React.Component {
                       })}
                     </div>
                     <div>
-                      <a href={this.props.checkoutUrl} className="button" style={ {width: '100%'} }>{Helpers.formatPrice(this.props.totalPrice)}  &nbsp; &ndash; &nbsp;  Checkout</a>
+                      <a href={this.props.checkoutUrl} className="button" style={ {width: '100%'} }>{Helpers.formatPrice(this.props.lineItemsSubtotalPrice.amount)}  &nbsp; &ndash; &nbsp;  Checkout</a>
                     </div>
                   </div>
                   :

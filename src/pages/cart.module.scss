@@ -1,0 +1,29 @@
+.lineItem {
+ & + & {
+  margin-top: 20px;
+ }
+}
+
+.lineItemRemove {
+  cursor: pointer;
+}
+
+.lineItemWrap {
+  margin-bottom: 20px;
+}
+
+.shield {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparentize(#fff, 0.5);
+  pointer-events: none;
+}
+
+.shieldActive {
+  opacity: 1;
+  pointer-events: auto;
+}

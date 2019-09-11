@@ -46,7 +46,8 @@ a {
   text-decoration: none;
 }
 
-button {
+button,
+.button {
   display: inline-block;
   text-align: center;
   vertical-align: middle;
@@ -55,9 +56,14 @@ button {
   color: #fff;
   border: none;
   text-transform: uppercase;
+  font-size: $font-size-sm;
   font-weight: bold;
   padding: 6px 20px;
   cursor: pointer;
+
+  &:disabled {
+    background-color: lighten(#000, 50%);
+  }
 }
 
 select {

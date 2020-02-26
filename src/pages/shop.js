@@ -10,16 +10,16 @@ import ShopProduct from '../components/shopProduct'
 class ShopPage extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const products = get(this, 'props.data.allShopifyProduct.edges')
+    const products = get(this, 'props.data.shopifyCollection.products')
 
     return (
       <Layout location={this.props.location} >
         <Helmet title={ `Shop | ${siteTitle}` } />
         <BackButton />
         <div className="shopWrapper">
-          {products.map(({ node }, i) => {
+          {products.map((product, i) => {
             return (
-              <ShopProduct product={node} key={i} />
+              <ShopProduct product={product} key={i} />
             )
           })}
         </div>
@@ -37,44 +37,37 @@ export const pageQuery = graphql`
         title
       }
     }
-    allShopifyProduct(
-      sort: {
-        fields: [createdAt]
-        order: DESC
-      }
-    ) {
-      edges {
-        node {
-          id
+    shopifyCollection(handle: {eq: "webstore"}) {
+      products {
+        id
+        shopifyId
+        title
+        handle
+        descriptionHtml
+        availableForSale
+        images {
+          originalSrc
+        }
+        priceRange {
+          minVariantPrice {
+            amount
+          }
+          maxVariantPrice {
+            amount
+          }
+        }
+        options {
+          name
+          values
+        }
+        variants {
           shopifyId
           title
-          handle
-          descriptionHtml
           availableForSale
-          images {
-            originalSrc
-          }
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-            maxVariantPrice {
-              amount
-            }
-          }
-          options {
+          price
+          selectedOptions {
             name
-            values
-          }
-          variants {
-            shopifyId
-            title
-            availableForSale
-            price
-            selectedOptions {
-              name
-              value
-            }
+            value
           }
         }
       }

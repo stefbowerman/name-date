@@ -11,11 +11,7 @@ import styles from './cart.module.scss'
 const mapStateToProps = state => {
   const props = {
     client: state.client,
-    checkoutId: state.checkout.id,
-    totalPrice: state.checkout.totalPrice,
-    lineItems: state.checkout.lineItems,
-    lineItemsSubtotalPrice: state.checkout.lineItemsSubtotalPrice,
-    checkoutUrl: state.checkout.webUrl,
+    checkout: state.checkout
   }
 
   return props
@@ -48,7 +44,7 @@ class CartPage extends React.Component {
     })
 
     // Remove an item from the checkout
-    this.props.client.checkout.removeLineItems(this.props.checkoutId, [lineItemID]).then((checkout) => {
+    this.props.client.checkout.removeLineItems(this.props.checkout.id, [lineItemID]).then((checkout) => {
       // Do something with the updated checkout
       this.props.lineItemRemoved({checkout})
 
@@ -70,7 +66,9 @@ class CartPage extends React.Component {
     if(this.state && this.state.cartInProgress) {
       shieldClasses.push(styles.shieldActive)
     }
-    
+
+    const lineItemsSubtotalPriceAmount = get(this.props, 'checkout.lineItemsSubtotalPrice.amount', 0)
+
     return (
       <Layout location={this.props.location} >
         <Helmet title={`Cart | ${siteTitle}`} />
@@ -80,10 +78,10 @@ class CartPage extends React.Component {
             <div className="container">
               <div style={ {maxWidth: 450, width: '100%', margin: '0 auto', textAlign: 'justify', position: 'relative'} }>
                 <div className={shieldClasses.join(' ')}></div>
-                {this.props.lineItems.length > 0 ? 
+                {this.props.checkout.lineItems && this.props.checkout.lineItems.length > 0 ? 
                   <div>
                     <div className={styles.lineItemWrap}>
-                      {this.props.lineItems.map((lineItem, i) => {
+                      {this.props.checkout.lineItems.map((lineItem, i) => {
                         return (
                           <div key={i} className={styles.lineItem}>
                             <div style={ {display: 'flex', flexDirection: 'row', padding: '10px 0'} }>
@@ -107,7 +105,7 @@ class CartPage extends React.Component {
                       })}
                     </div>
                     <div>
-                      <a href={this.props.checkoutUrl} className="button" style={ {width: '100%'} }>{Helpers.formatPrice(this.props.lineItemsSubtotalPrice.amount)}  &nbsp; &ndash; &nbsp;  Checkout</a>
+                      <a href={this.props.checkout.webUrl} className="button" style={ {width: '100%'} }>{Helpers.formatPrice(lineItemsSubtotalPriceAmount)}  &nbsp; &ndash; &nbsp;  Checkout</a>
                     </div>
                   </div>
                   :

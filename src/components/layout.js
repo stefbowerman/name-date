@@ -2,16 +2,14 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { connect } from 'react-redux'
 import Client from 'shopify-buy'
+import get from 'lodash/get'
 
 import base from '../styles/base.scss'
 import Navigation from './navigation'
 
 const mapStateToProps = (state) => {
   const props = {
-    checkout: state.checkout,
-    totalPrice: state.checkout.totalPrice,
-    lineItems: state.checkout.lineItems,
-    checkoutWebUrl: state.checkout.webUrl
+    checkout: state.checkout
   }
 
   return props
@@ -79,21 +77,21 @@ class Layout extends React.Component {
   }
 
   render() {
-    const { location, children } = this.props
-    const totalPrice = Number.parseFloat(this.props.totalPrice).toFixed(2)
+    const { location, children, checkout } = this.props
 
     let rootPath = `/`
     if (typeof __PREFIX_PATHS__ !== `undefined` && __PREFIX_PATHS__) {
       rootPath = __PATH_PREFIX__ + `/`
     }
 
-    const showCart = this.props.lineItems && this.props.lineItems.length > 0 && location.pathname.indexOf('cart') == -1
+    const lineItems = get(checkout, 'lineItems', [])
+    const showCart = lineItems && lineItems.length > 0 && location.pathname.indexOf('cart') == -1
 
     return (
       <div>
         <Navigation />
         <p style={ {position: 'fixed', zIndex: 1, top: 20, right: 20, opacity: (showCart ? 1 : 0), pointerEvents: (showCart ? 'auto' : 'none')} }>
-          <Link to="/cart">{`Cart - ${this.props.lineItems.length} ${this.props.lineItems.length == 1 ? 'Item' : 'Items'}`}</Link>
+          <Link to="/cart">{`Cart - ${lineItems.length} ${lineItems.length == 1 ? 'Item' : 'Items'}`}</Link>
         </p>
         {children}
       </div>

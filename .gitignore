@@ -63,5 +63,8 @@ public
 # gatsby cache folder
 .cache
 
+# redux cache folders
+*reduxcache*
+
 # contentful config file
 .contentful.json

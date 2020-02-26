@@ -1,6 +1,62 @@
 const Promise = require('bluebird')
 const path = require('path')
 
+exports.createSchemaCustomization = ({ actions, schema }) => {
+  const { createTypes } = actions
+
+  const typeDefs = `
+    type ShopifyProductPriceRangeMinVariantPrice {
+      amount: String
+      currencyCode: String
+    }
+    type ShopifyProductPriceRangeMaxVariantPrice {
+      amount: String
+      currencyCode: String
+    }
+    type ShopifyProductPriceRange {
+      minVariantPrice: ShopifyProductPriceRangeMinVariantPrice
+      maxVariantPrice: ShopifyProductPriceRangeMaxVariantPrice
+    }
+    type ShopifyProductImage {
+      id: String
+      originalSrc: String
+    }
+    type ShopifyProductOption implements Node {
+      name: String
+      values: [String]
+    }
+    type ShopifyProductVariantSelectedOptions {
+      name: String
+      value: String
+    }
+    type ShopifyProductVariant implements Node {
+      shopifyId: String
+      title: String
+      availableForSale: Boolean
+      price: String
+      selectedOptions: [ShopifyProductVariantSelectedOptions]
+    }
+    type ShopifyProduct implements Node {
+      id: ID!
+      shopifyId: String
+      title: String
+      handle: String
+      descriptionHtml: String
+      availableForSale: Boolean
+      images: [ShopifyProductImage]
+      priceRange: ShopifyProductPriceRange
+      options: [ShopifyProductOption]
+      variants: [ShopifyProductVariant]
+      createdAt: Date
+    }
+    type ShopifyCollection implements Node {
+      products: [ShopifyProduct]
+    }
+  `
+  
+  createTypes(typeDefs)
+}
+
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 

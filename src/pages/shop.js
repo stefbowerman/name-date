@@ -10,14 +10,14 @@ import ShopProduct from '../components/shopProduct'
 class ShopPage extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const products = get(this, 'props.data.shopifyCollection.products')
+    const products = get(this, 'props.data.shopifyCollection.products', [])
 
     return (
       <Layout location={this.props.location} >
         <Helmet title={ `Shop | ${siteTitle}` } />
         <BackButton />
         <div className="shopWrapper">
-          {products.map((product, i) => {
+          {products && products.length && products.map((product, i) => {
             return (
               <ShopProduct product={product} key={i} />
             )

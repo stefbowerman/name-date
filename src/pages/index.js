@@ -8,12 +8,12 @@ import FeedItem from '../components/feedItem';
 
 const RootIndex = ({ data, location }) => {
   return (
-    <Layout location={location} >
+    <React.Fragment>
       <Helmet title={data.site.siteMetadata.title} />
       <div className="wrapper">
         <Feed feedItems={data.allContentfulFeed.edges} />
       </div>
-    </Layout>
+    </React.Fragment>
   )
 }
 

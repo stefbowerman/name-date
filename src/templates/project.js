@@ -15,7 +15,7 @@ class ProjectTemplate extends React.Component {
     const hasVideo = project.youtubeID !== null && project.youtubeID.length > 0;
 
     return (
-      <Layout location={this.props.location} >
+      <React.Fragment>
         <Helmet title={`${project.title} | ${siteTitle}`} />
         <div className={styles.projectWrapper}>
           <div className={styles.projectContent}>
@@ -52,7 +52,7 @@ class ProjectTemplate extends React.Component {
             </div>         
           </div>
         </div>
-      </Layout>
+      </React.Fragment>
     )
   }
 }

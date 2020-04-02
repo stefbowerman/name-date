@@ -8,7 +8,7 @@ import styles from './about.module.scss'
 
 const AboutPage = ({ data, location }) => {
   return (
-    <Layout location={location} >
+    <React.Fragment>
       <Helmet title={ `About | ${data.site.siteMetadata.title}` } />
       <div className="wrapper">
         <div className={styles.aboutWrapper}>
@@ -25,7 +25,7 @@ const AboutPage = ({ data, location }) => {
           </div>
         </div>
       </div>
-    </Layout>
+    </React.Fragment>
   )
 }
 

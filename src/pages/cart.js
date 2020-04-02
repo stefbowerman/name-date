@@ -69,7 +69,7 @@ class CartPage extends React.Component {
     const lineItemsSubtotalPriceAmount = get(this.props, 'checkout.lineItemsSubtotalPrice.amount', 0)
 
     return (
-      <Layout location={this.props.location} >
+      <React.Fragment>
         <Helmet title={`Cart | ${siteTitle}`} />
         <div className="shopWrapper">
           <div style={ {display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '100px 0' } }>
@@ -113,7 +113,7 @@ class CartPage extends React.Component {
             </div>
           </div>
         </div>
-      </Layout>
+      </React.Fragment>
     )
   }
 }

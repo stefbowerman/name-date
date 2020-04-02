@@ -12,7 +12,7 @@ class ShopPage extends React.Component {
     const products = get(this, 'props.data.shopifyCollection.products', [])
 
     return (
-      <Layout location={this.props.location} >
+      <React.Fragment>
         <Helmet title={ `Shop | ${siteTitle}` } />
         <div className="shopWrapper">
           {products && products.length && products.map((product, i) => {
@@ -21,7 +21,7 @@ class ShopPage extends React.Component {
             )
           })}
         </div>
-      </Layout>
+      </React.Fragment>
     )
   }
 }

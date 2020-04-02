@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'gatsby-link'
+import Img from 'gatsby-image'
 
 class FeedItem extends React.Component {
   constructor(props) {
@@ -24,17 +25,18 @@ class FeedItem extends React.Component {
   render() {
     const project = this.props.project;
     const image = this.props.image;
-    const orientation = (this.props.image.resize.height > this.props.image.resize.width ? 'portrait' : 'landscape');
-    const ratio = (this.props.image.resize.height * 100 / this.props.image.resize.width).toFixed(2);
-    let className = `feedItem feedItem--${orientation}`;
+    const orientation = image.fluid.aspectRatio < 1 ? 'portrait' : 'landscape';
 
     return (
-      <div className={className} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+      <div className={`feedItem feedItem--${orientation}`} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         <Link to={`/project/${project.slug}`}>
-          <div style={ {position: 'relative', height: 0, paddingBottom: `${ratio}%` } }>
-            <img src={image.resize.src} alt={project.title} style={ {position: 'absolute', top: 0, bottom: 0, left: 0, right: 0} }/>
-          </div>
+          <Img
+            fluid={image.fluid}
+            alt={project.title}
+            durationFadeIn={900}
+          />
         </Link>
+        
         {project.title != undefined &&
           <div
             className="feedItemTitle"

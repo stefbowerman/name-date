@@ -4,8 +4,10 @@ import { connect } from 'react-redux'
 import Client from 'shopify-buy'
 import get from 'lodash/get'
 
-import base from '../styles/base.scss'
+import BackButton from './backButton'
 import Navigation from './navigation'
+
+import base from '../styles/base.scss'
 
 const mapStateToProps = (state) => {
   const props = {
@@ -79,6 +81,8 @@ class Layout extends React.Component {
   render() {
     const { location, children, checkout } = this.props
 
+    console.log(location);
+
     let rootPath = `/`
     if (typeof __PREFIX_PATHS__ !== `undefined` && __PREFIX_PATHS__) {
       rootPath = __PATH_PREFIX__ + `/`
@@ -89,6 +93,7 @@ class Layout extends React.Component {
 
     return (
       <div>
+        <BackButton show={location.pathname !== '/'} />
         <Navigation />
         <p style={ {position: 'fixed', zIndex: 1, top: 20, right: 20, opacity: (showCart ? 1 : 0), pointerEvents: (showCart ? 'auto' : 'none')} }>
           <Link to="/cart">{`Cart - ${lineItems.length} ${lineItems.length == 1 ? 'Item' : 'Items'}`}</Link>

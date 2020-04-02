@@ -13,8 +13,13 @@
     position: center;
     repeat: no-repeat;
   }
+  opacity: 0;
+  transform: translateX(5px);
+  transition: opacity 300ms ease-out,
+              transform 300ms ease-out;
+}
 
-  &:hover {
-    opacity: 1;
-  }
+.show {
+  opacity: 1;
+  transform: translateX(0);
 }

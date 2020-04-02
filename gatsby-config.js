@@ -61,6 +61,12 @@ module.exports = {
         // startup, try decreasing this number.
         paginationSize: 100,
       },
-    }
+    },
+    {
+      resolve: `gatsby-plugin-layout`,
+      options: {
+        component: require.resolve(`./src/components/layout.js`),
+      },
+    },
   ],
 }

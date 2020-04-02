@@ -6,20 +6,15 @@ import Layout from '../components/layout'
 import Feed from '../components/feed';
 import FeedItem from '../components/feedItem';
 
-class RootIndex extends React.Component {
-  render() {
-    const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const feedItems = get(this, 'props.data.allContentfulFeed.edges')
-
-    return (
-      <Layout location={this.props.location} >
-        <Helmet title={siteTitle} />
-        <div className="wrapper">
-          <Feed feedItems={feedItems} />
-        </div>
-      </Layout>
-    )
-  }
+const RootIndex = ({ data, location }) => {
+  return (
+    <React.Fragment>
+      <Helmet title={data.site.siteMetadata.title} />
+      <div className="wrapper">
+        <Feed feedItems={data.allContentfulFeed.edges} />
+      </div>
+    </React.Fragment>
+  )
 }
 
 export default RootIndex
@@ -36,28 +31,17 @@ export const pageQuery = graphql`
         node {
           id
           image {
-            resize(width: 1180) {
+            fluid {
+              aspectRatio
               src
-              width
-              height
+              srcSet
+              sizes
             }
           }
           project {
             id
             title
             slug
-            description {
-              childMarkdownRemark {
-                html
-              }
-            }
-            images {
-              resize(width: 1180) {
-                src
-                width
-                height
-              }
-            }
           }
         }
       }

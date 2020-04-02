@@ -3,7 +3,6 @@ import Helmet from 'react-helmet'
 import get from 'lodash/get'
 import Img from 'gatsby-image'
 import Layout from '../components/layout'
-import BackButton from '../components/backButton';
 import YoutubeEmbed from '../components/youtubeEmbed';
 import ProjectImage from '../components/projectImage';
 import { graphql } from 'gatsby'
@@ -16,9 +15,8 @@ class ProjectTemplate extends React.Component {
     const hasVideo = project.youtubeID !== null && project.youtubeID.length > 0;
 
     return (
-      <Layout location={this.props.location} >
+      <React.Fragment>
         <Helmet title={`${project.title} | ${siteTitle}`} />
-        <BackButton />
         <div className={styles.projectWrapper}>
           <div className={styles.projectContent}>
             {
@@ -54,7 +52,7 @@ class ProjectTemplate extends React.Component {
             </div>         
           </div>
         </div>
-      </Layout>
+      </React.Fragment>
     )
   }
 }
@@ -77,15 +75,16 @@ export const pageQuery = graphql`
         }
       }
       images {
-        placeholder: resize(width:20) {
+        fluid {
+          aspectRatio
+          src
+          srcSet
+          sizes
+        }   
+        placeholder: resize(width: 10) {
           src
           width
           height 
-        }
-        full: resize(width: 1600) {
-          src
-          width
-          height
         }
       }
       youtubeID

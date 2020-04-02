@@ -4,7 +4,6 @@ import Link from 'gatsby-link'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
 import Layout from '../components/layout'
-import BackButton from '../components/backButton'
 import ShopProduct from '../components/shopProduct'
 
 class ShopPage extends React.Component {
@@ -13,9 +12,8 @@ class ShopPage extends React.Component {
     const products = get(this, 'props.data.shopifyCollection.products', [])
 
     return (
-      <Layout location={this.props.location} >
+      <React.Fragment>
         <Helmet title={ `Shop | ${siteTitle}` } />
-        <BackButton />
         <div className="shopWrapper">
           {products && products.length && products.map((product, i) => {
             return (
@@ -23,7 +21,7 @@ class ShopPage extends React.Component {
             )
           })}
         </div>
-      </Layout>
+      </React.Fragment>
     )
   }
 }

@@ -5,7 +5,6 @@ import get from 'lodash/get'
 import Helmet from 'react-helmet'
 import Layout from '../components/layout'
 import Helpers from '../helpers'
-import BackButton from '../components/backButton'
 import styles from './cart.module.scss'
 
 const mapStateToProps = state => {
@@ -70,9 +69,8 @@ class CartPage extends React.Component {
     const lineItemsSubtotalPriceAmount = get(this.props, 'checkout.lineItemsSubtotalPrice.amount', 0)
 
     return (
-      <Layout location={this.props.location} >
+      <React.Fragment>
         <Helmet title={`Cart | ${siteTitle}`} />
-        <BackButton />
         <div className="shopWrapper">
           <div style={ {display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '100px 0' } }>
             <div className="container">
@@ -115,7 +113,7 @@ class CartPage extends React.Component {
             </div>
           </div>
         </div>
-      </Layout>
+      </React.Fragment>
     )
   }
 }

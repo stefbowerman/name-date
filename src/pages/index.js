@@ -1,10 +1,7 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import get from 'lodash/get'
 import Helmet from 'react-helmet'
-import Layout from '../components/layout'
 import Feed from '../components/feed';
-import FeedItem from '../components/feedItem';
 
 const RootIndex = ({ data, location }) => {
   return (

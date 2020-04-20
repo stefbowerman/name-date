@@ -85,7 +85,7 @@ class ImageMapTest extends React.Component {
     const totalBoxCountArray = Array(totalBoxCount).fill()
 
     totalBoxCountArray.forEach((_, i) => {
-      loader.add(`tile${i}`, `full-map-${i}.jpg`)
+      loader.add(`tile${i}`, `/full-map-${i}.jpg`)
     });
 
     loader

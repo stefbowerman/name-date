@@ -14,7 +14,7 @@
     "gatsby-source-contentful": "^2.2.5",
     "gatsby-source-shopify": "^3.0.1",
     "gatsby-transformer-remark": "^2.1.6",
-    "isomorphic-pixi": "^0.1.0",
+    "isomorphic-pixi": "https://github.com/stefbowerman/isomorphic-pixi/tarball/master",
     "lodash": "^4.17.15",
     "node-sass": "^4.11.0",
     "pixi-fps": "^2.0.1",

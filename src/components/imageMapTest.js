@@ -1,11 +1,17 @@
 import React from 'react'
-import * as PIXI from 'pixi.js'
-import { Viewport } from 'pixi-viewport'
-import PixiFps from "pixi-fps";
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import { Application, Loader, Graphics, Sprite } from 'isomorphic-pixi'
 
-const worldWidth = 16 * 1000
-const worldHeight = 96 * 100
+// const worldWidth = 16 * 1000
+// const worldHeight = 96 * 100
+
+const boxHeight = 4800
+const boxWidth = 4000
+const worldBoxCountColumns = 4
+const worldBoxCountRows = 2
+const worldWidth = worldBoxCountColumns * boxWidth
+const worldHeight = worldBoxCountRows * boxHeight
+const totalBoxCount = worldBoxCountColumns * worldBoxCountRows
 
 class ImageMapTest extends React.Component {
   constructor(props) {
@@ -20,7 +26,10 @@ class ImageMapTest extends React.Component {
   }
 
   componentDidMount() {
-    this.app = new PIXI.Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
+    const Viewport = require('pixi-viewport').Viewport; // Can't import this outside of this func, relies on the window
+    const PixiFps = require('pixi-fps').default
+
+    this.app = new Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
     this.elRef.current.appendChild(this.app.view)
 
     this.app.view.style.position = 'fixed'
@@ -72,30 +81,31 @@ class ImageMapTest extends React.Component {
         })
       })
 
-    const loader = new PIXI.Loader()
+    const loader = new Loader()
+    const totalBoxCountArray = Array(totalBoxCount).fill()
+
+    totalBoxCountArray.forEach((_, i) => {
+      loader.add(`tile${i}`, `full-map-${i}.jpg`)
+    });
 
     loader
-      .add('fullMap', 'full-map.jpg')
       .on('progress', (loader, resource) => {
-        console.log(`loading: ${resource.url}`)
-        console.log(`progress: ${loader.progress}%`)
+        // console.log(resource)
+        // console.log(`loading: ${resource.url}`)
+        // console.log(`progress: ${loader.progress}%`)
         this.props.onImageLoadProgress(loader.progress)
       })
       .load((loader, resources) => {
-        const sprite = new PIXI.Sprite(resources.fullMap.texture);
-        sprite.position.set(0, 0)
-        sprite.x = 0
-        sprite.y = 0 
-        sprite.height = worldHeight
-        sprite.width = worldWidth
-        this.viewport.addChild(sprite)
+        totalBoxCountArray.forEach((_, i) => {
+          this.createAndPlaceMapTile(resources[`tile${i}`])
+        });
         
         this.props.onImagesLoaded();
       });
 
     // Add a green border
-    const line = this.viewport.addChild(new PIXI.Graphics());
-    line.lineStyle(3, 0x6ca769).drawRect(0, 0, this.viewport.worldWidth, this.viewport.worldHeight);
+    // const line = this.viewport.addChild(new Graphics());
+    // line.lineStyle(3, 0x6ca769).drawRect(0, 0, this.viewport.worldWidth, this.viewport.worldHeight);
 
     const center = {
       x: (this.viewport.worldWidth/2 - window.innerWidth/2),
@@ -111,13 +121,37 @@ class ImageMapTest extends React.Component {
 
     // Add FPS
     // const fpsCounter = new PixiFps();
-    // this.app.stage.addChild(fpsCounter);     
+    // this.app.stage.addChild(fpsCounter);
+  }
+
+  createAndPlaceMapTile(resource) {
+    const index = Number.parseInt(resource.name.replace('tile', ''))
+    
+    // Create the texture
+    const sprite = new Sprite(resource.texture);
+
+    // Figure out the position
+    const rowIndex = Math.floor(index/worldBoxCountColumns)
+    const columnIndex = index % worldBoxCountColumns
+    let x = columnIndex * boxWidth
+    let y = rowIndex * boxHeight
+
+    sprite.position.set(x, y)
+    sprite.height = boxHeight
+    sprite.width = boxWidth
+
+    this.viewport.addChild(sprite)
+
+    console.log(`visible? ${sprite.visible}`)
+    console.log(`settings sprite to (${x}, ${y})`)
+    sprite.visible = true
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
     document.body.style.overflow = ''
     this.app && this.app.destroy()
+    this.viewport && this.viewport.destroy()
   }
 
   handleResize() {

@@ -5,7 +5,6 @@ import ImageMapTest from '../components/imageMapTest'
 
 const DatePage = ({ data }) => {
   const [imagesLoaded, setImagesLoaded] = useState(false)
-  const [progress, setProgress] = useState(0)
 
   const klasses = ['image-map-blocker']
 
@@ -17,17 +16,15 @@ const DatePage = ({ data }) => {
     <React.Fragment>
       <Helmet title={data.site.siteMetadata.title} />
       <div className={klasses.join(' ')}>
-        Loading...<br />
-        Progress = {`${progress}%`}
+        <div className="image-map-blocker__loader">
+          loading...
+        </div>
       </div>
       <ImageMapTest
-        onImageLoadProgress={(progress) => {
-          setProgress(progress)
-        }}
         onImagesLoaded={() => {
           setTimeout(() => {
             setImagesLoaded(true)
-          }, 2000)
+          }, 1000)
         }} 
       />
     </React.Fragment>

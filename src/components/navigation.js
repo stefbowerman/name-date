@@ -11,12 +11,13 @@ const query = graphql`
   }
 `
 
-const Navigation = props => {
-  const hasProducts = !!(props.data.collection.products && props.data.collection.products.length)
+const Navigation = ({ data, show }) => {
+  const hasProducts = !!(data.collection.products && data.collection.products.length)
+  const cn = `navigation ${!show ? 'is-hidden' : ''}`
 
   return (
     <nav role="navigation">
-      <ul className="navigation">
+      <ul className={cn}>
         <li className="navigationItem">
           <Link to="/">Work</Link>
         </li>
@@ -28,6 +29,9 @@ const Navigation = props => {
             <Link to="/shop">Shop</Link>
           </li>
         }
+        <li className="navigationItem">
+          <Link to="/date">Date</Link>
+        </li>        
       </ul>
     </nav>
   )

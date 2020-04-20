@@ -92,7 +92,7 @@ class Layout extends React.Component {
     return (
       <div>
         <BackButton show={location.pathname !== '/'} />
-        <Navigation />
+        <Navigation show={location.pathname !== '/date'}/>
         <p style={ {position: 'fixed', zIndex: 1, top: 20, right: 20, opacity: (showCart ? 1 : 0), pointerEvents: (showCart ? 'auto' : 'none')} }>
           <Link to="/cart">{`Cart - ${lineItems.length} ${lineItems.length == 1 ? 'Item' : 'Items'}`}</Link>
         </p>

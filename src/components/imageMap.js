@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Application, Loader, Graphics, Sprite } from 'isomorphic-pixi'
-import { CanvasRenderer } from '@pixi/canvas-renderer';
 
 const boxHeight = 2675
 const boxWidth = 2500
@@ -32,8 +31,7 @@ class ImageMap extends React.Component {
       width: window.innerWidth,
       height: window.innerHeight,
       resolution: window.devicePixelRatio,
-      resizeTo: window,
-      forceCanvas: true
+      resizeTo: window
     });
 
     this.elRef.current.appendChild(this.app.view)

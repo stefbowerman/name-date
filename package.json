@@ -7,6 +7,7 @@
     "url": "https://github.com/contentful-userland/gatsby-contentful-starter/issues"
   },
   "dependencies": {
+    "@pixi/canvas-renderer": "^5.2.3",
     "gatsby-image": "^2.0.13",
     "gatsby-plugin-layout": "^1.2.1",
     "gatsby-plugin-react-helmet": "^3.0.0",
@@ -14,6 +15,7 @@
     "gatsby-source-contentful": "^2.2.5",
     "gatsby-source-shopify": "^3.0.1",
     "gatsby-transformer-remark": "^2.1.6",
+    "gsap": "^3.2.6",
     "isomorphic-pixi": "https://github.com/stefbowerman/isomorphic-pixi/tarball/master",
     "lodash": "^4.17.15",
     "node-sass": "^4.11.0",
@@ -25,7 +27,8 @@
     "react-helmet": "^5.2.0",
     "react-redux": "^7.1.0",
     "shopify-buy": "^2.7.0",
-    "stats.js": "^0.17.0"
+    "stats.js": "^0.17.0",
+    "youtube-player": "^5.5.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

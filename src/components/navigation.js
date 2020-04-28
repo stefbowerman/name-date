@@ -1,5 +1,6 @@
 import React from 'react'
-import {Link, graphql, StaticQuery} from 'gatsby'
+import PropTypes from 'prop-types'
+import { Link, graphql, StaticQuery } from 'gatsby'
 
 const query = graphql`
   query NavigationQuery {
@@ -19,22 +20,30 @@ const Navigation = ({ data, show }) => {
     <nav role="navigation">
       <ul className={cn}>
         <li className="navigationItem">
-          <Link to="/">Work</Link>
+          <Link to="/work">Work</Link>
         </li>
         <li className="navigationItem">
+          <Link to="/">Date</Link>
+        </li>        
+        <li className="navigationItem">
           <Link to="/about">About</Link>
-        </li>
+        </li>        
         {hasProducts && 
           <li className="navigationItem">
             <Link to="/shop">Shop</Link>
           </li>
-        }
-        <li className="navigationItem">
-          <Link to="/date">Date</Link>
-        </li>        
+        }     
       </ul>
     </nav>
   )
+}
+
+Navigation.proptypes = {
+  show: PropTypes.bool
+}
+
+Navigation.defaultProps = {
+  show: true
 }
 
 export default props => (

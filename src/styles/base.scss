@@ -168,7 +168,7 @@ p {
   background-color: $body-bg;
   height: 100%;
   width: 100%;
-  transition: opacity 1000ms cubic-bezier(0.27, 0.01, 0.15, 0.93);
+  transition: opacity 1800ms cubic-bezier(0.27, 0.01, 0.15, 0.93);
   opacity: 1;
 
   &.is-loaded {

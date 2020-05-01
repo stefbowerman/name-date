@@ -20,14 +20,14 @@ const Navigation = ({ data, show }) => {
     <nav role="navigation">
       <ul className={cn}>
         <li className="navigationItem">
-          <Link to="/work">Work</Link>
+          <Link to="/work">Name</Link>
+        </li>      
+        <li className="navigationItem">
+          <Link to="/about">About</Link>
         </li>
         <li className="navigationItem">
           <Link to="/">Date</Link>
-        </li>        
-        <li className="navigationItem">
-          <Link to="/about">About</Link>
-        </li>        
+        </li>  
         {hasProducts && 
           <li className="navigationItem">
             <Link to="/shop">Shop</Link>

@@ -10,6 +10,7 @@ const UPDATE_QUANTITY_IN_CART = 'UPDATE_QUANTITY_IN_CART'
 const REMOVE_LINE_ITEM_IN_CART = 'REMOVE_LINE_ITEM_IN_CART'
 const TOGGLE_USER_AUDIO_ENABLED_PREFERENCE = 'TOGGLE_USER_AUDIO_ENABLED_PREFERENCE'
 const SET_AUDIO_SHOULD_BE_PLAYING = 'SET_AUDIO_SHOULD_BE_PLAYING'
+const CREATE_PIXI_LOADER = 'CREATE_PIXI_LOADER'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +32,8 @@ const reducer = (state, action) => {
       return {...state, userAudioEnabledPreference: !state.userAudioEnabledPreference}
     case SET_AUDIO_SHOULD_BE_PLAYING:
       return {...state, audioShouldBePlaying: action.payload}
+    case CREATE_PIXI_LOADER:
+      return {...state, pixiLoader: action.payload}
     default:
       return state
   }
@@ -44,7 +47,8 @@ const initialState = {
   shop: {},
   client: {},
   userAudioEnabledPreference: true,
-  audioShouldBePlaying: false
+  audioShouldBePlaying: false,
+  pixiLoader: null
 }
 
 // const createStore = () => reduxCreateStore(reducer, initialState, (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()))

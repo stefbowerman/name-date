@@ -6,7 +6,7 @@ import ImageMap from '../components/imageMap'
 
 const RootIndex = ({ data }) => {
   const dispatch = useDispatch()
-  const [imagesLoaded, setImagesLoaded] = useState(false)
+  const [mapLoaded, setMapLoaded] = useState(false)
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const RootIndex = ({ data }) => {
 
   const klasses = ['image-map-blocker']
 
-  if(imagesLoaded) {
+  if(mapLoaded) {
     klasses.push('is-loaded')
   }
 
@@ -27,7 +27,7 @@ const RootIndex = ({ data }) => {
       <Helmet title={`Date | ${data.site.siteMetadata.title}`} />
       <div className={klasses.join(' ')}>
         <div className="image-map-blocker__loader">
-          {imagesLoaded ? 'loaded' : 'loading...' }
+          loading
           <span className="image-map__progress-bar" style={{ width: `${progress}%`}}></span>
         </div>
       </div>
@@ -35,13 +35,11 @@ const RootIndex = ({ data }) => {
         onImageLoadProgress={progress => {
           setProgress(progress)
         }}
-        onImagesLoaded={() => {
+        onImageMapReady={() => {
+          setMapLoaded(true)
           setTimeout(() => {
-            setImagesLoaded(true)
-            setTimeout(() => {
-              dispatch({ type: 'SET_AUDIO_SHOULD_BE_PLAYING', payload: true })
-            }, 1500)
-          }, 200) // Tiny timeout to allow the canvas to settledown?
+            dispatch({ type: 'SET_AUDIO_SHOULD_BE_PLAYING', payload: true })
+          }, 1500)
         }} 
       />
     </React.Fragment>

@@ -27,6 +27,7 @@
     "react-redux": "^7.1.0",
     "shopify-buy": "^2.7.0",
     "stats.js": "^0.17.0",
+    "underscore": "^1.10.2",
     "youtube-player": "^5.5.2"
   },
   "devDependencies": {

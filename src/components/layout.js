@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Client from 'shopify-buy'
 import get from 'lodash/get'
+import { Loader } from 'isomorphic-pixi'
 
 import BackButton from './backButton'
 import Navigation from './navigation'
@@ -22,7 +23,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     clientCreate: (data) => dispatch({ type: 'CLIENT_CREATED', payload: data }),
-    checkoutCreate: (data) => dispatch({ type: 'CHECKOUT_FOUND', payload: data })
+    checkoutCreate: (data) => dispatch({ type: 'CHECKOUT_FOUND', payload: data }),
+    createPixiLoader: (data) => dispatch({ type: 'CREATE_PIXI_LOADER', payload: data })
   }
 }
 
@@ -71,6 +73,8 @@ class Layout extends React.Component {
   }
 
   componentDidMount() {
+    console.log('layout mounted')
+    const pixiLoader = new Loader()
     const client = Client.buildClient({
       domain: 'namedate.myshopify.com',
       storefrontAccessToken: '28c72258e1f9647431f8d339048a0b7c'
@@ -78,6 +82,8 @@ class Layout extends React.Component {
 
     this.props.clientCreate(client);
     this.initializeCheckout(client)
+
+    this.props.createPixiLoader(pixiLoader)
   }
 
   render() {
@@ -102,11 +108,6 @@ class Layout extends React.Component {
         <CartSummary show={showCart} lineItems={lineItems} />
         
         {children}
-
-        <AudioPlayer
-          file={'/namedatemix.mp3'}
-          shouldBePlaying={audioShouldBePlaying}
-        />
       </div>
     )
   }

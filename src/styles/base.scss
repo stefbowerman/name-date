@@ -182,8 +182,6 @@ p {
   background: $body-color;
   height: 1px;
   width: 0%;
-  transition: width 100ms cubic-bezier(0.16, 0.02, 0.16, 0.95);
-
   
   z-index: 1000;
   left: 0;

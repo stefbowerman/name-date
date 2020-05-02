@@ -58,10 +58,10 @@ class ImageMap extends React.Component {
       totalBoxCount = worldBoxCountColumns * worldBoxCountRows
       totalBoxCountArray = Array(totalBoxCount).fill()
       boxBuffer = 100
-      zoomMaxWidth  = boxWidth * 1.5
-      zoomMaxheight = boxHeight * 1.5
-      zoomMinHeight = boxHeight / 4
-      zoomMinWidth  = boxWidth / 4
+      zoomMaxWidth  = boxWidth * 2
+      zoomMaxheight = boxHeight * 2
+      zoomMinHeight = boxHeight / 6
+      zoomMinWidth  = boxWidth / 6
     }
 
     if (this.props.pixiLoader) {
@@ -178,8 +178,8 @@ class ImageMap extends React.Component {
     this.viewport.setZoom((window.innerWidth < 800 ? 0.4 : 0.75), true);
 
     // Add FPS
-    const fpsCounter = new PixiFps();
-    this.app.stage.addChild(fpsCounter);
+    // const fpsCounter = new PixiFps();
+    // this.app.stage.addChild(fpsCounter);
   }
 
   onLoaderComplete() {

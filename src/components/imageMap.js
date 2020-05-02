@@ -4,17 +4,22 @@ import PropTypes from 'prop-types'
 import { Application, Graphics, Sprite } from 'isomorphic-pixi'
 import { throttle } from 'underscore'
 
-const boxHeight = 2675
-const boxWidth = 2500
-const worldBoxCountColumns = 8
-const worldBoxCountRows = 4
-const worldWidth = worldBoxCountColumns * boxWidth
-const worldHeight = worldBoxCountRows * boxHeight
-const totalBoxCount = worldBoxCountColumns * worldBoxCountRows
-const totalBoxCountArray = Array(totalBoxCount).fill()
-const boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection
+// Desktop Variables
+let boxHeight = 2675
+let boxWidth = 2500
+let worldBoxCountColumns = 8
+let worldBoxCountRows = 4
+let worldWidth = worldBoxCountColumns * boxWidth
+let worldHeight = worldBoxCountRows * boxHeight
+let totalBoxCount = worldBoxCountColumns * worldBoxCountRows
+let totalBoxCountArray = Array(totalBoxCount).fill()
+let boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection
+let zoomMaxWidth  = boxWidth * 1.5
+let zoomMaxheight = boxHeight * 1
+let zoomMinHeight = boxHeight / 6
+let zoomMinWidth  = boxWidth / 6
 
-// @TODO - Inside componentWillUnmount -> set center coordinated + zoom into redux state and use incase some one comes back to the page
+// @TODO - Inside componentWillUnmount -> set center coordinated + zoom into redux state and use incase some one comes back to the page?
 
 const mapStateToProps = state => {
   return {
@@ -42,6 +47,23 @@ class ImageMap extends React.Component {
   }
 
   componentDidMount() {
+    // If we're on a mobile device, update the variables for the mobile map
+    if (window.innerWidth < 800) {
+      boxHeight = 1784
+      boxWidth = 2000
+      worldBoxCountColumns = 10
+      worldBoxCountRows = 6
+      worldWidth = worldBoxCountColumns * boxWidth
+      worldHeight = worldBoxCountRows * boxHeight
+      totalBoxCount = worldBoxCountColumns * worldBoxCountRows
+      totalBoxCountArray = Array(totalBoxCount).fill()
+      boxBuffer = 100
+      zoomMaxWidth  = boxWidth * 1.5
+      zoomMaxheight = boxHeight * 1.5
+      zoomMinHeight = boxHeight / 4
+      zoomMinWidth  = boxWidth / 4
+    }
+
     if (this.props.pixiLoader) {
       this.createPixiApp()
     }
@@ -92,8 +114,6 @@ class ImageMap extends React.Component {
     this.app.view.style.width = '100%'
     this.app.view.style.height = '100%'
 
-    // this.setCanvasHeight() // sets height for this.app.view - needs it's own function because it gets called
-
     this.viewport = new Viewport({
       screenWidth: window.innerWidth,
       screenHeight: window.innerHeight,
@@ -119,10 +139,10 @@ class ImageMap extends React.Component {
         direction: 'all'
       })
       .clampZoom({
-        maxWidth: boxWidth*1.5,
-        maxheight: boxHeight*1,
-        minHeight: boxHeight/6,
-        minWidth: boxWidth/6
+        maxWidth: zoomMaxWidth,
+        maxheight: zoomMaxheight,
+        minHeight: zoomMinHeight,
+        minWidth: zoomMinWidth,
       })
 
     this.viewport
@@ -183,8 +203,7 @@ class ImageMap extends React.Component {
     index = index < 10 ? `0${index}` : index;      
     
     const name = `tile${i}`
-    // const filePath = `/image_map/image-map_${index}.jpg`
-    const filePath = `/image_map/${window.innerWidth < 800 ? 'mobile/' : ''}image-map_${index}.jpg`
+    const filePath = window.innerWidth < 800 ? `/image_map/mobile/image-map-${index}.jpg` : `/image_map/image-map_${index}.jpg`
 
     return { name, filePath }
   }
@@ -230,7 +249,7 @@ class ImageMap extends React.Component {
       x -= boxBuffer
       y -= boxBuffer
       height += boxBuffer*2
-      width += boxBuffer*2
+      width  += boxBuffer*2
 
       const tileRectangle = {x, y, width, height, top: y, bottom: (y+height), left: x, right: (x+width) }
 
@@ -251,12 +270,6 @@ class ImageMap extends React.Component {
 
   checkRectangleIntersection(r1, r2) {
     return !(r2.left > r1.right || r2.right < r1.left ||  r2.top > r1.bottom || r2.bottom < r1.top);
-  }
-
-  setCanvasHeight() {
-    if (!this.app) return
-
-    this.app.view.style.height = `${(document && document.documentElement && document.documentElement.clientHeight) || window.innerHeight}px` // Work around for iOS 100vh bug
   }
 
   handleResize() {

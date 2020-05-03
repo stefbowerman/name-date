@@ -16,8 +16,8 @@ let totalBoxCountArray = Array(totalBoxCount).fill()
 let boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection
 let zoomMaxWidth  = boxWidth * 1.5
 let zoomMaxheight = boxHeight * 1
-let zoomMinHeight = boxHeight / 6
-let zoomMinWidth  = boxWidth / 6
+let zoomMinHeight = boxHeight / 4
+let zoomMinWidth  = boxWidth / 4
 
 // @TODO - Inside componentWillUnmount -> set center coordinated + zoom into redux state and use incase some one comes back to the page?
 
@@ -58,8 +58,8 @@ class ImageMap extends React.Component {
       totalBoxCount = worldBoxCountColumns * worldBoxCountRows
       totalBoxCountArray = Array(totalBoxCount).fill()
       boxBuffer = 100
-      zoomMaxWidth  = boxWidth * 2
-      zoomMaxheight = boxHeight * 2
+      zoomMaxWidth  = boxWidth / 1.5
+      zoomMaxheight = boxHeight / 1.5
       zoomMinHeight = boxHeight / 6
       zoomMinWidth  = boxWidth / 6
     }
@@ -150,24 +150,6 @@ class ImageMap extends React.Component {
       .on('drag-end', this.handleViewportDragEnd)
       .on('moved', this.handleMoved)
 
-    // Add any assets to the loader if they aren't already cached in there
-    totalBoxCountArray.forEach((_, i) => {
-      const { name, filePath } = this.tileInfoForIndex(i)
-
-      if (this.loader.resources[name] == undefined) {
-        this.loader.add(name, filePath)
-      }
-    })
-
-    this.loader
-      .on('progress', (loader, resource) => {
-        // console.log(resource)
-        // console.log(`loading: ${resource.url}`)
-        // console.log(`progress: ${loader.progress}%`)
-        this.props.onImageLoadProgress(loader.progress)
-      })
-      .load(this.onLoaderComplete.bind(this));
-
     const center = {
       x: (this.viewport.worldWidth/2 - window.innerWidth/2),
       y: (this.viewport.worldHeight/2 - window.innerHeight/2)
@@ -177,9 +159,34 @@ class ImageMap extends React.Component {
     this.viewport.moveCenter(center.x - 100, center.y - 100);
     this.viewport.setZoom((window.innerWidth < 800 ? 0.4 : 0.75), true);
 
+    // Add any assets to the loader if they aren't already cached in there
+    let resourcesToLoad = []
+    totalBoxCountArray.forEach((_, i) => {
+      const { name, filePath } = this.tileInfoForIndex(i)
+
+      if (this.loader.resources[name] == undefined) {
+        resourcesToLoad.push(name)
+        this.loader.add(name, filePath)
+      }
+    })
+
+    if (resourcesToLoad.length) {
+      this.loader
+        .on('progress', (loader, resource) => {
+          // console.log(resource)
+          // console.log(`loading: ${resource.url}`)
+          // console.log(`progress: ${loader.progress}%`)
+          this.props.onImageLoadProgress(loader.progress)
+        })
+        .load(this.onLoaderComplete.bind(this));
+    }
+    else {
+      this.onLoaderComplete()
+    }
+
     // Add FPS
     // const fpsCounter = new PixiFps();
-    // this.app.stage.addChild(fpsCounter);
+    // this.app.stage.addChild(fpsCounter);    
   }
 
   onLoaderComplete() {
@@ -193,7 +200,7 @@ class ImageMap extends React.Component {
   }
 
   onImageMapReady() {
-    this.setTileVisibility();
+    this.handleResize()
 
     setTimeout(this.props.onImageMapReady, 200) // Give it a sec (or 0.2) for the image map to settle down
   }
@@ -240,7 +247,6 @@ class ImageMap extends React.Component {
 
     const viewportRectangle = this.viewport.getVisibleBounds()
 
-    let visibleCount = 0
     this.tiles.forEach((tile, j) => {
       let { sprite, x, y } = tile
       let { height, width } = sprite
@@ -254,18 +260,12 @@ class ImageMap extends React.Component {
       const tileRectangle = {x, y, width, height, top: y, bottom: (y+height), left: x, right: (x+width) }
 
       if (this.checkRectangleIntersection(tileRectangle, viewportRectangle)) {
-        // console.log(`${}`)
-        // sprite.tint = 0xFF0000
         sprite.visible = true
-        visibleCount++
       }
       else {
-        sprite.tint = 0xFFFFFF
         sprite.visible = false
       }
     })
-
-    console.log(`visible count = ${visibleCount}`)
   }
 
   checkRectangleIntersection(r1, r2) {

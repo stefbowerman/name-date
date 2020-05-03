@@ -7,7 +7,7 @@ import styles from './audioPlayer.module.scss'
 const mapStateToProps = state => {
   const props = {
     userAudioEnabledPreference: state.userAudioEnabledPreference,
-    audioShouldBePlaying: state.audioShouldBePlaying
+    shouldBePlaying: state.audioShouldBePlaying
   }
 
   return props
@@ -37,7 +37,6 @@ class AudioPlayer extends React.Component {
       duration: 2,
       paused: true,
       onUpdate: () => {
-        console.log(this.tweenableProps.vol)
         this.setAudioVolume(this.tweenableProps.vol)
       },
       onComplete: () => {
@@ -50,7 +49,6 @@ class AudioPlayer extends React.Component {
       duration: 0.5,
       paused: true,
       onUpdate: () => {
-        console.log(this.tweenableProps.vol)
         this.setAudioVolume(this.tweenableProps.vol)
       },
       onComplete: () => {
@@ -58,6 +56,7 @@ class AudioPlayer extends React.Component {
       }
     });
 
+    this.toggleAudio = this.toggleAudio.bind(this)
     this.setAudioVolume = this.setAudioVolume.bind(this)
     this.handlePlayerCanPlay = this.handlePlayerCanPlay.bind(this)
   }
@@ -79,7 +78,7 @@ class AudioPlayer extends React.Component {
     
     if (this.props.shouldBePlaying && this.props.userAudioEnabledPreference) {
       this.player.addEventListener('canplay', () => {
-        console.log('audio can play');
+        // console.log('audio can play');
         this.handlePlayerCanPlay();
       })
     }
@@ -96,12 +95,12 @@ class AudioPlayer extends React.Component {
 
     // If the user had audio *enabled* and now it's 'disabled'
     if (prevProps.userAudioEnabledPreference && !userAudioOn) {
-      console.log('going from enabled to disabled')
+      // console.log('going from enabled to disabled')
       this.playOut()
     }
     // If the user had audio *disabled* and now it's 'enabled'
     else if (!prevProps.userAudioEnabledPreference && userAudioOn) {
-      console.log('going from disabled to enabled')
+      // console.log('going from disabled to enabled')
       this.props.shouldBePlaying && this.playIn();
     }
 
@@ -134,8 +133,16 @@ class AudioPlayer extends React.Component {
     if (!this.player) return
     
     this.fadeOutTween.kill()
-    this.player.play()
-    this.fadeInTween.seek(0).play()
+
+    const p = this.player.play()
+
+    if (p !== undefined) {
+      p.then(() => {
+        this.fadeInTween.seek(0).play()
+      }, (e) => {
+        console.log(e)
+      })
+    }
   }
 
   playOut() {
@@ -156,8 +163,8 @@ class AudioPlayer extends React.Component {
 
     return (
       <div className={ classNames.join(' ') }>
-        <span onClick={e => { this.toggleAudio(); }} style={{ cursor: 'pointer', color: `${this.state.playing ? 'red' : 'black' }`}}>
-          AUDIO {this.props.userAudioEnabledPreference ? 'ON' : 'OFF'}
+        <span onClick={this.toggleAudio} style={{ cursor: 'pointer' }}>
+          {this.state.playing ? 'PAUSE' : 'PLAY'} AUDIO
         </span>
         <audio
           ref={ el => this.player = el }

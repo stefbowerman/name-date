@@ -73,7 +73,6 @@ class Layout extends React.Component {
   }
 
   componentDidMount() {
-    console.log('layout mounted')
     const pixiLoader = new Loader()
     const client = Client.buildClient({
       domain: 'namedate.myshopify.com',
@@ -108,6 +107,10 @@ class Layout extends React.Component {
         <CartSummary show={showCart} lineItems={lineItems} />
         
         {children}
+
+        <AudioPlayer
+          file={'/namedatemix.mp3'}
+        />
       </div>
     )
   }

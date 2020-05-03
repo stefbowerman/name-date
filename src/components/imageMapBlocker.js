@@ -36,7 +36,6 @@ class ImageMapBlocker extends React.Component {
 
   onProgressTweenComplete() {
     if (this.tweenProgress === 100) {
-      console.log('complete!')
       this.setState({
         progress: 100
       })      

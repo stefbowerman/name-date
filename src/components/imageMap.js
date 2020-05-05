@@ -16,7 +16,7 @@ let totalBoxCount = worldBoxCountColumns * worldBoxCountRows
 let totalBoxCountArray = Array(totalBoxCount).fill()
 let boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection
 let zoomMinScale = 0.3
-let zoomMaxScale = 1
+let zoomMaxScale = 0.87
 let blankTileIndexes = [44] // Array of 1based indexes where the tile is blank (we can skip loading)
 
 // @TODO - Inside componentWillUnmount -> set center coordinated + zoom into redux state and use incase some one comes back to the page?
@@ -43,23 +43,23 @@ class ImageMap extends React.Component {
     this.handleResize = this.handleResize.bind(this)
     this.handleViewportDragStart = this.handleViewportDragStart.bind(this)
     this.handleViewportDragEnd = this.handleViewportDragEnd.bind(this)
-    this.handleMoved = throttle(this.handleMoved.bind(this), 200)
+    this.handleMoved = throttle(this.handleMoved.bind(this), 100)
   }
 
   componentDidMount() {
     // If we're on a mobile device, update the variables for the mobile map
     if (window.innerWidth < 800) {
-      boxHeight = 1405
-      boxWidth = 2000
-      worldBoxCountColumns = 8
-      worldBoxCountRows = 6
-      worldWidth = worldBoxCountColumns * boxWidth
-      worldHeight = worldBoxCountRows * boxHeight
-      totalBoxCount = worldBoxCountColumns * worldBoxCountRows
-      totalBoxCountArray = Array(totalBoxCount).fill()
-      boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection      
+      // boxHeight = 1405
+      // boxWidth = 2000
+      // worldBoxCountColumns = 8
+      // worldBoxCountRows = 6
+      // worldWidth = worldBoxCountColumns * boxWidth
+      // worldHeight = worldBoxCountRows * boxHeight
+      // totalBoxCount = worldBoxCountColumns * worldBoxCountRows
+      // totalBoxCountArray = Array(totalBoxCount).fill()
+      // boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection      
       zoomMinScale = 0.4
-      zoomMaxScale = 0.85
+      zoomMaxScale = 1
     }
 
     if (this.props.pixiLoader) {
@@ -89,7 +89,7 @@ class ImageMap extends React.Component {
 
     // Can't import this outside of this func, relies on the window
     const Viewport = require('pixi-viewport').Viewport;
-    const PixiFps = require('pixi-fps').default
+    // const PixiFps = require('pixi-fps').default
 
     this.loader = this.props.pixiLoader
 
@@ -210,7 +210,8 @@ class ImageMap extends React.Component {
     index = index < 10 ? `0${index}` : index;      
     
     const name = `tile${i}`
-    const filePath = `/image_map/${window.innerWidth < 800 ? 'mobile' : 'desktop'}/tile_${index}.jpg`
+    // const filePath = `/image_map/${window.innerWidth < 800 ? 'mobile' : 'desktop'}/tile_${index}.jpg`
+    const filePath = `/image_map/desktop/tile_${index}.jpg`
 
     return { name, filePath }
   }
@@ -294,6 +295,7 @@ class ImageMap extends React.Component {
 
   handleMoved() {
     this.setTileVisibility()
+    // console.log(this.viewport.scaled)
   }
 
   render() {

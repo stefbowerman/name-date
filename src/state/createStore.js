@@ -8,7 +8,7 @@ const SHOP_FOUND = 'SHOP_FOUND'
 const ADD_VARIANT_TO_CART = 'ADD_VARIANT_TO_CART'
 const UPDATE_QUANTITY_IN_CART = 'UPDATE_QUANTITY_IN_CART'
 const REMOVE_LINE_ITEM_IN_CART = 'REMOVE_LINE_ITEM_IN_CART'
-const TOGGLE_USER_AUDIO_ENABLED_PREFERENCE = 'TOGGLE_USER_AUDIO_ENABLED_PREFERENCE'
+const SET_USER_AUDIO_ENABLED_PREFERENCE = 'SET_USER_AUDIO_ENABLED_PREFERENCE'
 const SET_AUDIO_SHOULD_BE_PLAYING = 'SET_AUDIO_SHOULD_BE_PLAYING'
 const CREATE_PIXI_LOADER = 'CREATE_PIXI_LOADER'
 
@@ -28,8 +28,8 @@ const reducer = (state, action) => {
       return {...state, checkout: action.payload.checkout}
     case REMOVE_LINE_ITEM_IN_CART:
       return {...state, checkout: action.payload.checkout}
-    case TOGGLE_USER_AUDIO_ENABLED_PREFERENCE:
-      return {...state, userAudioEnabledPreference: !state.userAudioEnabledPreference}
+    case SET_USER_AUDIO_ENABLED_PREFERENCE:
+      return {...state, userAudioEnabledPreference: action.payload}      
     case SET_AUDIO_SHOULD_BE_PLAYING:
       return {...state, audioShouldBePlaying: action.payload}
     case CREATE_PIXI_LOADER:

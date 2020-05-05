@@ -15,7 +15,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleUserAudioEnabledPreference: data => dispatch({ type: 'TOGGLE_USER_AUDIO_ENABLED_PREFERENCE' })
+    setUserAudioEnabledPreference: data => dispatch({ type: 'SET_USER_AUDIO_ENABLED_PREFERENCE', payload: data })
   }
 }
 
@@ -29,6 +29,7 @@ class AudioPlayer extends React.Component {
     }
 
     this.state = {
+      playing: false,
       visuallyPlaying: false // actual playing state is slightly removed from the visual playing state because we fadeout the audio
     }
 
@@ -66,12 +67,14 @@ class AudioPlayer extends React.Component {
 
     this.player.addEventListener('play', () => {
       this.setState({
+        playing: true,
         visuallyPlaying: true
       })
     })
 
     this.player.addEventListener('pause', () => {
       this.setState({
+        playing: false,
         visuallyPlaying: false
       })
     })    
@@ -91,22 +94,22 @@ class AudioPlayer extends React.Component {
   componentDidUpdate(prevProps) {
     // console.log(this.props.shouldBePlaying)
 
-    const userAudioOn = this.props.userAudioEnabledPreference
+    const userAudioEnabledCurrently = this.props.userAudioEnabledPreference
 
     // If the user had audio *enabled* and now it's 'disabled'
-    if (prevProps.userAudioEnabledPreference && !userAudioOn) {
+    if (prevProps.userAudioEnabledPreference && !userAudioEnabledCurrently) {
       // console.log('going from enabled to disabled')
       this.playOut()
     }
     // If the user had audio *disabled* and now it's 'enabled'
-    else if (!prevProps.userAudioEnabledPreference && userAudioOn) {
+    else if (!prevProps.userAudioEnabledPreference && userAudioEnabledCurrently) {
       // console.log('going from disabled to enabled')
       this.props.shouldBePlaying && this.playIn();
     }
 
     // If the 'shouldBePlaying' prop is changed
     if (prevProps.shouldBePlaying !== this.props.shouldBePlaying) {
-      (this.props.shouldBePlaying && userAudioOn) ? this.playIn() : this.playOut()
+      (this.props.shouldBePlaying && userAudioEnabledCurrently) ? this.playIn() : this.playOut()
     }
   }
 
@@ -130,8 +133,7 @@ class AudioPlayer extends React.Component {
   }
 
   playIn() {
-    if (!this.player) return
-    
+    if (!this.player || this.state.playing) return
     this.fadeOutTween.kill()
 
     const p = this.player.play()
@@ -146,7 +148,7 @@ class AudioPlayer extends React.Component {
   }
 
   playOut() {
-    if (!this.player) return
+    if (!this.player || !this.state.playing) return
 
     this.fadeInTween.kill()
     this.fadeOutTween.seek(0).play()
@@ -156,7 +158,15 @@ class AudioPlayer extends React.Component {
   }
 
   toggleAudio() {
-    this.props.toggleUserAudioEnabledPreference();
+    // playIn / Out has to get called explicitly to work with iOS
+    if (this.state.playing) {
+      this.props.setUserAudioEnabledPreference(false)
+      this.playOut()
+    }
+    else {
+      this.props.setUserAudioEnabledPreference(true)
+      this.playIn()
+    }
   }
 
   render() {
@@ -172,7 +182,6 @@ class AudioPlayer extends React.Component {
         <audio
           ref={ el => this.player = el }
           preload="auto" 
-          controls
           loop
         >
           <source

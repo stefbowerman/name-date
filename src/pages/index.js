@@ -8,7 +8,7 @@ import ImageMap from '../components/imageMap'
 const RootIndex = ({ data }) => {
   const dispatch = useDispatch()
   const [mapLoaded, setMapLoaded] = useState(false)
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress]   = useState(0)
 
   useEffect(() => {
     // Cleanup on unmount

@@ -29,7 +29,7 @@ class AudioPlayer extends React.Component {
     }
 
     this.state = {
-      playing: false
+      visuallyPlaying: false // actual playing state is slightly removed from the visual playing state because we fadeout the audio
     }
 
     this.fadeInTween = gsap.fromTo(this.tweenableProps, { vol: 0 }, {
@@ -66,13 +66,13 @@ class AudioPlayer extends React.Component {
 
     this.player.addEventListener('play', () => {
       this.setState({
-        playing: true
+        visuallyPlaying: true
       })
     })
 
     this.player.addEventListener('pause', () => {
       this.setState({
-        playing: false
+        visuallyPlaying: false
       })
     })    
     
@@ -150,6 +150,9 @@ class AudioPlayer extends React.Component {
 
     this.fadeInTween.kill()
     this.fadeOutTween.seek(0).play()
+    this.setState({
+      visuallyPlaying: false
+    })
   }
 
   toggleAudio() {
@@ -164,7 +167,7 @@ class AudioPlayer extends React.Component {
     return (
       <div className={ classNames.join(' ') }>
         <span onClick={this.toggleAudio} style={{ cursor: 'pointer' }}>
-          {this.state.playing ? 'PAUSE' : 'PLAY'} AUDIO
+          {this.state.visuallyPlaying ? 'Pause' : 'Play'} audio
         </span>
         <audio
           ref={ el => this.player = el }

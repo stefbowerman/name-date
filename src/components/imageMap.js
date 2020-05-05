@@ -1,23 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Application, Graphics, Sprite } from 'isomorphic-pixi'
+// import { Application, Graphics, Sprite } from 'isomorphic-pixi'
+import { Application, Sprite } from 'isomorphic-pixi'
 import { throttle } from 'underscore'
 
 // Desktop Variables
-let boxHeight = 2675
-let boxWidth = 2500
+let boxHeight = 2704
+let boxWidth = 3750
 let worldBoxCountColumns = 8
-let worldBoxCountRows = 4
+let worldBoxCountRows = 6
 let worldWidth = worldBoxCountColumns * boxWidth
 let worldHeight = worldBoxCountRows * boxHeight
 let totalBoxCount = worldBoxCountColumns * worldBoxCountRows
 let totalBoxCountArray = Array(totalBoxCount).fill()
 let boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection
-let zoomMaxWidth  = boxWidth * 1.5
-let zoomMaxheight = boxHeight * 1
-let zoomMinHeight = boxHeight / 4
-let zoomMinWidth  = boxWidth / 4
+let zoomMinScale = 0.3
+let zoomMaxScale = 1
+let blankTileIndexes = [44] // Array of 1based indexes where the tile is blank (we can skip loading)
 
 // @TODO - Inside componentWillUnmount -> set center coordinated + zoom into redux state and use incase some one comes back to the page?
 
@@ -43,25 +43,23 @@ class ImageMap extends React.Component {
     this.handleResize = this.handleResize.bind(this)
     this.handleViewportDragStart = this.handleViewportDragStart.bind(this)
     this.handleViewportDragEnd = this.handleViewportDragEnd.bind(this)
-    this.handleMoved = throttle(this.handleMoved.bind(this), 100)
+    this.handleMoved = throttle(this.handleMoved.bind(this), 200)
   }
 
   componentDidMount() {
     // If we're on a mobile device, update the variables for the mobile map
     if (window.innerWidth < 800) {
-      boxHeight = 1784
+      boxHeight = 1405
       boxWidth = 2000
-      worldBoxCountColumns = 10
+      worldBoxCountColumns = 8
       worldBoxCountRows = 6
       worldWidth = worldBoxCountColumns * boxWidth
       worldHeight = worldBoxCountRows * boxHeight
       totalBoxCount = worldBoxCountColumns * worldBoxCountRows
       totalBoxCountArray = Array(totalBoxCount).fill()
-      boxBuffer = 100
-      zoomMaxWidth  = boxWidth / 1.5
-      zoomMaxheight = boxHeight / 1.5
-      zoomMinHeight = boxHeight / 6
-      zoomMinWidth  = boxWidth / 6
+      boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection      
+      zoomMinScale = 0.4
+      zoomMaxScale = 0.85
     }
 
     if (this.props.pixiLoader) {
@@ -129,9 +127,13 @@ class ImageMap extends React.Component {
 
     // activate plugins
     this.viewport
-      .drag({ clampWheel: true })
+      .drag({
+        clampWheel: true
+      })
       .pinch()
-      .wheel({ smooth: 3 })
+      .wheel({
+        smooth: 3
+      })
       .decelerate({
         friction: 0.8
       })
@@ -139,10 +141,8 @@ class ImageMap extends React.Component {
         direction: 'all'
       })
       .clampZoom({
-        maxWidth: zoomMaxWidth,
-        maxheight: zoomMaxheight,
-        minHeight: zoomMinHeight,
-        minWidth: zoomMinWidth,
+        minScale: zoomMinScale,
+        maxScale: zoomMaxScale
       })
 
     this.viewport
@@ -156,15 +156,17 @@ class ImageMap extends React.Component {
     }
 
     // Set initial vars
-    this.viewport.moveCenter(center.x - 100, center.y - 100);
-    this.viewport.setZoom((window.innerWidth < 800 ? 0.4 : 0.75), true);
+    this.viewport.moveCenter(center.x, center.y);
+    this.viewport.setZoom(zoomMinScale, true);
 
-    // Add any assets to the loader if they aren't already cached in there
+    // Add any assets to the loader
     let resourcesToLoad = []
     totalBoxCountArray.forEach((_, i) => {
       const { name, filePath } = this.tileInfoForIndex(i)
 
-      if (this.loader.resources[name] == undefined) {
+      // if they aren't already cached in there
+      // Or if the tile is blank
+      if (this.loader.resources[name] == undefined && !blankTileIndexes.includes(i+1)) {
         resourcesToLoad.push(name)
         this.loader.add(name, filePath)
       }
@@ -191,9 +193,7 @@ class ImageMap extends React.Component {
 
   onLoaderComplete() {
     this.tiles = totalBoxCountArray.map((_, i) => {
-      const { name } = this.tileInfoForIndex(i)
-
-      return this.createAndPlaceMapTile(this.loader.resources[name], i)
+      return this.createAndPlaceMapTile(i)
     });
 
     this.onImageMapReady();
@@ -210,12 +210,14 @@ class ImageMap extends React.Component {
     index = index < 10 ? `0${index}` : index;      
     
     const name = `tile${i}`
-    const filePath = window.innerWidth < 800 ? `/image_map/mobile/image-map-${index}.jpg` : `/image_map/image-map_${index}.jpg`
+    const filePath = `/image_map/${window.innerWidth < 800 ? 'mobile' : 'desktop'}/tile_${index}.jpg`
 
     return { name, filePath }
   }
 
-  createAndPlaceMapTile(resource, index) {   
+  createAndPlaceMapTile(index) {
+    const { name } = this.tileInfoForIndex(index)
+    const resource = this.loader.resources[name] || { texture: undefined }
     const sprite = new Sprite(resource.texture);
 
     // Figure out the position

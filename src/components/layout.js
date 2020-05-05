@@ -1,26 +1,30 @@
 import React from 'react'
-import { Link } from 'gatsby'
 import { connect } from 'react-redux'
 import Client from 'shopify-buy'
 import get from 'lodash/get'
+import { Loader } from 'isomorphic-pixi'
 
 import BackButton from './backButton'
 import Navigation from './navigation'
+import CartSummary from './cartSummary'
+import AudioPlayer from './audioPlayer'
 
 import base from '../styles/base.scss'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const props = {
-    checkout: state.checkout
+    checkout: state.checkout,
+    audioShouldBePlaying: state.audioShouldBePlaying
   }
 
   return props
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     clientCreate: (data) => dispatch({ type: 'CLIENT_CREATED', payload: data }),
-    checkoutCreate: (data) => dispatch({ type: 'CHECKOUT_FOUND', payload: data })
+    checkoutCreate: (data) => dispatch({ type: 'CHECKOUT_FOUND', payload: data }),
+    createPixiLoader: (data) => dispatch({ type: 'CREATE_PIXI_LOADER', payload: data })
   }
 }
 
@@ -69,6 +73,7 @@ class Layout extends React.Component {
   }
 
   componentDidMount() {
+    const pixiLoader = new Loader()
     const client = Client.buildClient({
       domain: 'namedate.myshopify.com',
       storefrontAccessToken: '28c72258e1f9647431f8d339048a0b7c'
@@ -76,27 +81,36 @@ class Layout extends React.Component {
 
     this.props.clientCreate(client);
     this.initializeCheckout(client)
+
+    this.props.createPixiLoader(pixiLoader)
   }
 
   render() {
-    const { location, children, checkout } = this.props
+    const { location, children, checkout, audioShouldBePlaying } = this.props
 
-    let rootPath = `/`
-    if (typeof __PREFIX_PATHS__ !== `undefined` && __PREFIX_PATHS__) {
-      rootPath = __PATH_PREFIX__ + `/`
-    }
+    // let rootPath = `/`
+    // if (typeof __PREFIX_PATHS__ !== `undefined` && __PREFIX_PATHS__) {
+    //   rootPath = __PATH_PREFIX__ + `/`
+    // }
 
+    const currentPath = location.pathname.replace(/^\/+|\/+$/g, ''); // Remove any leading or trailing slashs
     const lineItems = get(checkout, 'lineItems', [])
-    const showCart = lineItems && lineItems.length > 0 && location.pathname.indexOf('cart') == -1
+    const showCart = lineItems && lineItems.length > 0 && currentPath !== 'cart'
+    // console.log(location)
+    // console.log(`url = ${location.pathname}`)
+    // console.log(`shouldBePlaying = ${location.pathname.indexOf('date') > -1}`)
 
     return (
       <div>
-        <BackButton show={location.pathname !== '/'} />
+        <BackButton show={currentPath !== ''} />
         <Navigation />
-        <p style={ {position: 'fixed', zIndex: 1, top: 20, right: 20, opacity: (showCart ? 1 : 0), pointerEvents: (showCart ? 'auto' : 'none')} }>
-          <Link to="/cart">{`Cart - ${lineItems.length} ${lineItems.length == 1 ? 'Item' : 'Items'}`}</Link>
-        </p>
+        <CartSummary show={showCart} lineItems={lineItems} />
+        
         {children}
+
+        <AudioPlayer
+          file={'/namedatemix.mp3'}
+        />
       </div>
     )
   }

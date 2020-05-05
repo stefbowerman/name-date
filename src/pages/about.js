@@ -1,12 +1,9 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import Link from 'gatsby-link'
-import get from 'lodash/get'
 import Helmet from 'react-helmet'
-import Layout from "../components/layout"
 import styles from './about.module.scss'
 
-const AboutPage = ({ data, location }) => {
+const NotFoundPage = ({ data, location }) => {
   return (
     <React.Fragment>
       <Helmet title={ `About | ${data.site.siteMetadata.title}` } />
@@ -29,10 +26,10 @@ const AboutPage = ({ data, location }) => {
   )
 }
 
-export default AboutPage
+export default NotFoundPage
 
 export const pageQuery = graphql`
-  query AboutQuery {
+  query NotFoundQuery {
     site {
       siteMetadata {
         title

@@ -1,0 +1,13 @@
+.cartSummary {
+  position: fixed;
+  z-index: 1;
+  top: 20px;
+  right: 20px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.show {
+  opacity: 1;
+  pointer-events: auto;
+}

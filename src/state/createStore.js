@@ -8,6 +8,9 @@ const SHOP_FOUND = 'SHOP_FOUND'
 const ADD_VARIANT_TO_CART = 'ADD_VARIANT_TO_CART'
 const UPDATE_QUANTITY_IN_CART = 'UPDATE_QUANTITY_IN_CART'
 const REMOVE_LINE_ITEM_IN_CART = 'REMOVE_LINE_ITEM_IN_CART'
+const SET_USER_AUDIO_ENABLED_PREFERENCE = 'SET_USER_AUDIO_ENABLED_PREFERENCE'
+const SET_AUDIO_SHOULD_BE_PLAYING = 'SET_AUDIO_SHOULD_BE_PLAYING'
+const CREATE_PIXI_LOADER = 'CREATE_PIXI_LOADER'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -25,6 +28,12 @@ const reducer = (state, action) => {
       return {...state, checkout: action.payload.checkout}
     case REMOVE_LINE_ITEM_IN_CART:
       return {...state, checkout: action.payload.checkout}
+    case SET_USER_AUDIO_ENABLED_PREFERENCE:
+      return {...state, userAudioEnabledPreference: action.payload}      
+    case SET_AUDIO_SHOULD_BE_PLAYING:
+      return {...state, audioShouldBePlaying: action.payload}
+    case CREATE_PIXI_LOADER:
+      return {...state, pixiLoader: action.payload}
     default:
       return state
   }
@@ -36,7 +45,10 @@ const initialState = {
   },
   products: [],
   shop: {},
-  client: {}
+  client: {},
+  userAudioEnabledPreference: true,
+  audioShouldBePlaying: false,
+  pixiLoader: null
 }
 
 // const createStore = () => reduxCreateStore(reducer, initialState, (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()))

@@ -7,11 +7,41 @@
   list-style: none;
   padding: 0;
   margin: 0;
+
+  opacity: 1;
+  transform: translateX(-0px);
+  transition: opacity 250ms cubic-bezier(0.32, 0.04, 0.37, 1.02),
+              transform 250ms cubic-bezier(0.32, 0.04, 0.37, 1.02);  
+
+  &.is-hidden {
+    opacity: 0;
+    transform: translateX(-3px);
+    pointer-events: none;
+  }
 }
 
 .navigationItem {
   a {
+    display: inline-block;
+    position: relative;
     color: currentColor;
+
+    &:before {
+      content: "\00B7";
+      position: absolute;
+      pointer-events: none;
+      top: 2px;
+      left: 0;
+      opacity: 0;
+      font-size: 19px;
+      line-height: 1;
+      transition: opacity 500ms cubic-bezier(0.32, 0.04, 0.37, 1.02);
+      transform: translateX(-12px);
+    }
+
+    &[aria-current]:before {
+      opacity: 1;
+    }
   }
 
   & + & {

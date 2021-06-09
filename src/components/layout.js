@@ -31,6 +31,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const Layout = ({
+  location,
   children,
   checkout,
   audioShouldBePlaying,

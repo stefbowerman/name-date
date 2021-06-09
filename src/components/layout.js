@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { StaticQuery, graphql } from 'gatsby'
+import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import Client from 'shopify-buy'
 import get from 'lodash/get'
@@ -28,92 +30,101 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-class Layout extends React.Component {
-  constructor(props) {
-    super(props)
+const Layout = ({
+  children,
+  checkout,
+  audioShouldBePlaying,
+  clientCreate,
+  checkoutCreate,
+  createPixiLoader
+}) => {
 
-    this.state = {
-
-    }
-  }
-
-  async initializeCheckout(client) {
-    const isBrowser = typeof window !== 'undefined'
-    const existingCheckoutId = isBrowser ? typeof window !== 'undefined' && window.localStorage.getItem('shopify_checkout_id') : null // need the window && or netlify will choke
-
-    const setCheckoutInState = checkout => {
-      if(isBrowser) {
-        typeof window !== 'undefined' && window.localStorage.setItem('shopify_checkout_id', checkout.id)
-      }
-
-      this.setState({ checkout });
-    }
-
-    const createNewCheckout = () => client.checkout.create()
-    const fetchCheckout = id => client.checkout.fetch(id)
-
-    if(existingCheckoutId) {
-      try {
-        const checkout = await fetchCheckout(existingCheckoutId)
-        this.props.checkoutCreate(checkout); // dispatch
-
-        // Make sure this cart hasn't already been purchased
-        if(!checkout.completedAt) {
-          setCheckoutInState(checkout)
-          return
-        }
-      } catch(e) {
-        localStorage.setItem('shopify_checkout_id', null)
-      }
-    }
-
-    const newCheckout = await createNewCheckout()
-    this.props.checkoutCreate(newCheckout); // dispatch
-    setCheckoutInState(newCheckout)
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const pixiLoader = new Loader()
     const client = Client.buildClient({
       domain: 'namedate.myshopify.com',
       storefrontAccessToken: '28c72258e1f9647431f8d339048a0b7c'
     });
 
-    this.props.clientCreate(client);
-    this.initializeCheckout(client)
+    async function initializeCheckout(client) {
+      const isBrowser = typeof window !== 'undefined'
+      const existingCheckoutId = isBrowser ? typeof window !== 'undefined' && window.localStorage.getItem('shopify_checkout_id') : null // need the window && or netlify will choke
+  
+      const setCheckoutInState = checkout => {
+        if(isBrowser) {
+          typeof window !== 'undefined' && window.localStorage.setItem('shopify_checkout_id', checkout.id)
+        }  
+      }
+  
+      const createNewCheckout = () => client.checkout.create()
+      const fetchCheckout = id => client.checkout.fetch(id)
+  
+      if(existingCheckoutId) {
+        try {
+          const checkout = await fetchCheckout(existingCheckoutId)
+          checkoutCreate(checkout); // dispatch
+  
+          // Make sure this cart hasn't already been purchased
+          if(!checkout.completedAt) {
+            setCheckoutInState(checkout)
+            return
+          }
+        } catch(e) {
+          localStorage.setItem('shopify_checkout_id', null)
+        }
+      }
+  
+      const newCheckout = await createNewCheckout()
 
-    this.props.createPixiLoader(pixiLoader)
-  }
+      checkoutCreate(newCheckout); // dispatch
+      setCheckoutInState(newCheckout)
+    }     
 
-  render() {
-    const { location, children, checkout, audioShouldBePlaying } = this.props
+    clientCreate(client);
+    initializeCheckout(client)
+    createPixiLoader(pixiLoader)
+  }, [])
+  
+  const currentPath = location.pathname.replace(/^\/+|\/+$/g, ''); // Remove any leading or trailing slashs
+  const lineItems = get(checkout, 'lineItems', [])
+  const showCart = lineItems && lineItems.length > 0 && currentPath !== 'cart'
 
-    // let rootPath = `/`
-    // if (typeof __PREFIX_PATHS__ !== `undefined` && __PREFIX_PATHS__) {
-    //   rootPath = __PATH_PREFIX__ + `/`
-    // }
-
-    const currentPath = location.pathname.replace(/^\/+|\/+$/g, ''); // Remove any leading or trailing slashs
-    const lineItems = get(checkout, 'lineItems', [])
-    const showCart = lineItems && lineItems.length > 0 && currentPath !== 'cart'
-    // console.log(location)
-    // console.log(`url = ${location.pathname}`)
-    // console.log(`shouldBePlaying = ${location.pathname.indexOf('date') > -1}`)
-
-    return (
-      <div>
-        <BackButton show={currentPath !== ''} />
-        <Navigation />
-        <CartSummary show={showCart} lineItems={lineItems} />
+  return (
+    <StaticQuery
+      query={graphql`
+        query LayoutQuery {
+          site {
+            siteMetadata {
+              title
+              description
+            }
+          }
+        }
+      `}
+      render={data => (
         
-        {children}
+        <React.Fragment>
+          <Helmet>
+            <title>{data.site.siteMetadata.title}</title>
+            <meta name="description" content={data.site.siteMetadata.description}></meta>
+            <meta property="og:site_name" content={data.site.siteMetadata.title}></meta>
+            <meta property="og:title" content={data.site.siteMetadata.title}></meta>
+            <meta property="og:description" content={data.site.siteMetadata.description}></meta>
+          </Helmet>
 
-        <AudioPlayer
-          file={'/namedatemix.mp3'}
-        />
-      </div>
-    )
-  }
+          <BackButton show={currentPath !== ''} />
+          <Navigation />
+          <CartSummary show={showCart} lineItems={lineItems} />
+          
+          {children}
+    
+          <AudioPlayer
+            file={'/namedatemix.mp3'}
+          />
+        </React.Fragment>
+      )}
+    />
+  )
 }
 
 const ConnectedLayout = connect(

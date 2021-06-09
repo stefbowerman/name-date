@@ -1,29 +1,32 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import Link from 'gatsby-link'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
-import Layout from '../components/layout'
+
 import ShopProduct from '../components/shopProduct'
 
-class ShopPage extends React.Component {
-  render() {
-    const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const products = get(this, 'props.data.shopifyCollection.products', [])
+const ShopPage = ({ data }) => {
+  const products = get(data, 'shopifyCollection.products', [])
 
-    return (
-      <React.Fragment>
-        <Helmet title={ `Shop | ${siteTitle}` } />
-        <div className="shopWrapper">
-          {products && products.length && products.map((product, i) => {
-            return (
-              <ShopProduct product={product} key={i} />
-            )
-          })}
-        </div>
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title>{`Shop | ${data.site.siteMetadata.title}`}</title>
+        <meta property="og:title" content={`Shop | ${data.site.siteMetadata.title}`}></meta>
+      </Helmet>
+      
+      <div className="shopWrapper">
+        {products && products.length && products.map((product, i) => {
+          return (
+            <ShopProduct
+              product={product}
+              key={i}
+            />
+          )
+        })}
+      </div>
+    </React.Fragment>
+  )
 }
 
 export default ShopPage

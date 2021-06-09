@@ -22,6 +22,7 @@ if (!spaceId || !accessToken) {
 module.exports = {
   siteMetadata: {
     title: 'Name Date',
+    description: ''
   },
   pathPrefix: '/gatsby-contentful-starter',
   plugins: [

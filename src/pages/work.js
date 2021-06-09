@@ -1,12 +1,17 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import Helmet from 'react-helmet'
+
 import Feed from '../components/feed';
 
-const RootIndex = ({ data, location }) => {
+const WorkPage = ({ data }) => {
   return (
     <React.Fragment>
-      <Helmet title={`Work | ${data.site.siteMetadata.title}`} />
+      <Helmet>
+        <title>{`Work | ${data.site.siteMetadata.title}`}</title>
+        <meta property="og:title" content={`Work | ${data.site.siteMetadata.title}`}></meta>
+      </Helmet>
+
       <div className="wrapper">
         <Feed feedItems={data.allContentfulFeed.edges} />
       </div>
@@ -14,7 +19,7 @@ const RootIndex = ({ data, location }) => {
   )
 }
 
-export default RootIndex
+export default WorkPage
 
 export const pageQuery = graphql`
   query NameQuery {

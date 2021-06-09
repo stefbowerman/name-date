@@ -1,9 +1,8 @@
 import React from 'react'
-import { Link, graphql, navigate } from 'gatsby'
+import { graphql, navigate } from 'gatsby'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
-import Layout from '../components/layout'
 import Helpers from '../helpers'
 import styles from './cart.module.scss'
 
@@ -70,7 +69,10 @@ class CartPage extends React.Component {
 
     return (
       <React.Fragment>
-        <Helmet title={`Cart | ${siteTitle}`} />
+        <Helmet>
+          <title>{`Cart | ${siteTitle}`}</title>
+          <meta property="og:title" content={`Cart | ${siteTitle}`}></meta>
+        </Helmet>
         <div className="shopWrapper">
           <div style={ {display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '100px 0' } }>
             <div className="container">

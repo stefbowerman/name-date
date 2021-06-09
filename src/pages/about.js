@@ -3,10 +3,14 @@ import { graphql } from 'gatsby'
 import Helmet from 'react-helmet'
 import styles from './about.module.scss'
 
-const NotFoundPage = ({ data, location }) => {
+const NotFoundPage = ({ data }) => {
   return (
     <React.Fragment>
-      <Helmet title={ `About | ${data.site.siteMetadata.title}` } />
+      <Helmet>
+        <title>{`About | ${data.site.siteMetadata.title}`}</title>
+        <meta property="og:title" content={`About | ${data.site.siteMetadata.title}`}></meta>
+      </Helmet>
+      
       <div className="wrapper">
         <div className={styles.aboutWrapper}>
           <div className={styles.aboutWidth}>

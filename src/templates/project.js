@@ -1,60 +1,85 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import get from 'lodash/get'
-import Img from 'gatsby-image'
-import Layout from '../components/layout'
 import YoutubeEmbed from '../components/youtubeEmbed';
 import ProjectImage from '../components/projectImage';
 import { graphql } from 'gatsby'
 import styles from './project.module.scss'
 
-class ProjectTemplate extends React.Component {
-  render() {
-    const project = get(this.props, 'data.contentfulProject')
-    const siteTitle = get(this.props, 'data.site.siteMetadata.title')
-    const hasVideo = project.youtubeID !== null && project.youtubeID.length > 0;
+const ProjectTemplate = ({ data }) => {
+  const project = get(data, 'contentfulProject')
+  const siteTitle = get(data, 'site.siteMetadata.title')
+  const title = `${project.title} | ${siteTitle}`
+  const featuredImage = get(project, 'featuredImage')
+  const fallbackFeaturedImage = project.images && project.images[0]
+  const ogImage = featuredImage || fallbackFeaturedImage
+  const hasVideo = project.youtubeID !== null && project.youtubeID.length > 0;
 
-    return (
-      <React.Fragment>
-        <Helmet title={`${project.title} | ${siteTitle}`} />
-        <div className={styles.projectWrapper}>
-          <div className={styles.projectContent}>
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title>{title}</title>
+        <meta property="og:title" content={title}></meta>
+      </Helmet>
+
+      {
+        // Only render if there is a description
+        project.description && (  
+          <Helmet>
+            <meta
+              property="og:description"
+              content={project.description.childMarkdownRemark.html.replace(/(<([^>]+)>)/gi, "")}
+            ></meta>
+          </Helmet>
+        )
+      }      
+
+      { ogImage && (
+        <Helmet>
+          <meta property="og:image" content={ogImage.fixed.src} />
+          <meta property="og:image:width" content={ogImage.fixed.width} />
+          <meta property="og:image:height" content={ogImage.fixed.height} />
+        </Helmet>
+        )
+      }
+      
+      <div className={styles.projectWrapper}>
+        <div className={styles.projectContent}>
+          {
+            hasVideo ? (
+              <div className={styles.projectVideoWrapper}>
+                <div className={styles.projectVideo}>
+                  <YoutubeEmbed id={project.youtubeID} />
+                </div>
+              </div>
+            ) : project.images && (
+              <div className={styles.projectImagesWrapper}>
+                <div className={styles.projectImages}>
+                  {project.images.map((image, index) => {
+                    return (
+                      <ProjectImage image={image} key={ `project-img-${index}` } />
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          }
+
+          <div className={styles.projectCopy} style={ {textAlign: (hasVideo ? 'center' : '')} }>
+            <h1 className={styles.projectTitle}>{project.title}</h1>
             {
-              hasVideo ? (
-                <div className={styles.projectVideoWrapper}>
-                  <div className={styles.projectVideo}>
-                    <YoutubeEmbed id={project.youtubeID} />
-                  </div>
-                </div>
-              ) : project.images && (
-                <div className={styles.projectImagesWrapper}>
-                  <div className={styles.projectImages}>
-                    {project.images.map((image, index) => {
-                      return (
-                        <ProjectImage image={image} key={ `project-img-${index}` } />
-                      )
-                    })}
-                  </div>
-                </div>
+              // Only render if there is a description
+              project.description && (              
+                <div dangerouslySetInnerHTML={{
+                  __html: project.description.childMarkdownRemark.html,
+                }} />
               )
             }
-
-            <div className={styles.projectCopy} style={ {textAlign: (hasVideo ? 'center' : '')} }>
-              <h1 className={styles.projectTitle}>{project.title}</h1>
-              {
-                // Only render if there is a description
-                project.description && (              
-                  <div dangerouslySetInnerHTML={{
-                    __html: project.description.childMarkdownRemark.html,
-                  }} />
-                )
-              }
-            </div>         
-          </div>
+          </div>         
         </div>
-      </React.Fragment>
-    )
-  }
+      </div>
+    </React.Fragment>
+  )
 }
 
 export default ProjectTemplate
@@ -74,13 +99,31 @@ export const pageQuery = graphql`
           html
         }
       }
+      featuredImage {
+        fluid {
+          aspectRatio
+          src
+          srcSet
+          sizes
+        }
+        fixed: resize(width: 500) {
+          src
+          width
+          height
+        }
+      }
       images {
         fluid {
           aspectRatio
           src
           srcSet
           sizes
-        }   
+        }
+        fixed: resize(width: 500) {
+          src
+          width
+          height
+        }        
         placeholder: resize(width: 10) {
           src
           width

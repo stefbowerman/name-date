@@ -7,7 +7,6 @@ import ImageMap from '../components/imageMap'
 
 const RootIndex = ({ data }) => {
   const dispatch = useDispatch()
-  const [mapLoaded, setMapLoaded] = useState(false)
   const [progress, setProgress]   = useState(0)
 
   useEffect(() => {
@@ -19,7 +18,11 @@ const RootIndex = ({ data }) => {
 
   return (
     <React.Fragment>
-      <Helmet title={`Date | ${data.site.siteMetadata.title}`} />
+      <Helmet>
+        <title>{`Date | ${data.site.siteMetadata.title}`}</title>
+        <meta property="og:title" content={`Date | ${data.site.siteMetadata.title}`}></meta>
+      </Helmet>
+      
       <ImageMapBlocker progress={progress} />
       <ImageMap
         onImageLoadProgress={progress => {
@@ -43,6 +46,7 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        description
       }
     }
   }

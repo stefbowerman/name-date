@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import Helmet from 'react-helmet'
 
-const AboutPage = ({ data, location }) => {
+const AboutPage = ({ data }) => {
   return (
     <React.Fragment>
       <Helmet title={ `404 | ${data.site.siteMetadata.title}` } />

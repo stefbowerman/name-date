@@ -20,6 +20,8 @@ const NotFoundPage = ({ data }) => {
                 <p>Creative.  Photo.  Film.</p>
                 <div className={styles.contact}>
                   <a href="mailto:steventraylor96@gmail.com" target="_blank">Contact</a>
+                  <br />
+                  <a href="mailto:hl@cameraclub.com" target="_blank">Agency</a>
                 </div>
               </div>
             </div>

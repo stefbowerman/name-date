@@ -15,8 +15,8 @@ let worldHeight = worldBoxCountRows * boxHeight
 let totalBoxCount = worldBoxCountColumns * worldBoxCountRows
 let totalBoxCountArray = Array(totalBoxCount).fill()
 let boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection
-let zoomMinScale = 0.3
-let zoomMaxScale = 0.87
+let zoomMinScale = 0.25
+let zoomMaxScale = 0.8
 let blankTileIndexes = [] // Array of 1based indexes where the tile is blank (we can skip loading)
 
 // @TODO - Inside componentWillUnmount -> set center coordinated + zoom into redux state and use incase some one comes back to the page?
@@ -58,8 +58,9 @@ class ImageMap extends React.Component {
       // totalBoxCount = worldBoxCountColumns * worldBoxCountRows
       // totalBoxCountArray = Array(totalBoxCount).fill()
       // boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection      
-      zoomMinScale = 0.4
-      zoomMaxScale = 1
+      
+      // zoomMinScale = 0.35
+      // zoomMaxScale = 1
     }
 
     if (this.props.pixiLoader) {
@@ -150,13 +151,13 @@ class ImageMap extends React.Component {
       .on('drag-end', this.handleViewportDragEnd)
       .on('moved', this.handleMoved)
 
-    const center = {
-      x: (this.viewport.worldWidth/2 - window.innerWidth/2),
-      y: (this.viewport.worldHeight/2 - window.innerHeight/2)
+    const starting = {
+      x: ((this.viewport.worldWidth * 0.95)  - window.innerWidth/2), // (this.viewport.worldWidth/2 - window.innerWidth/2),
+      y: ((this.viewport.worldHeight * 0.2) - window.innerHeight/2) // (this.viewport.worldHeight/2 - window.innerHeight/2)
     }
 
     // Set initial vars
-    this.viewport.moveCenter(center.x, center.y);
+    this.viewport.moveCenter(starting.x, starting.y);
     this.viewport.setZoom(zoomMinScale, true);
 
     // Add any assets to the loader

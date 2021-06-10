@@ -6,7 +6,7 @@ import { Application, Sprite } from 'isomorphic-pixi'
 import { throttle } from 'underscore'
 
 // Desktop Variables
-let boxHeight = 2704
+let boxHeight = 2710 // 2704
 let boxWidth = 3750
 let worldBoxCountColumns = 8
 let worldBoxCountRows = 6
@@ -17,7 +17,7 @@ let totalBoxCountArray = Array(totalBoxCount).fill()
 let boxBuffer = 200 // number of pixels to buffer around the box when checking for intersection
 let zoomMinScale = 0.3
 let zoomMaxScale = 0.87
-let blankTileIndexes = [44] // Array of 1based indexes where the tile is blank (we can skip loading)
+let blankTileIndexes = [] // Array of 1based indexes where the tile is blank (we can skip loading)
 
 // @TODO - Inside componentWillUnmount -> set center coordinated + zoom into redux state and use incase some one comes back to the page?
 
@@ -211,7 +211,7 @@ class ImageMap extends React.Component {
     
     const name = `tile${i}`
     // const filePath = `/image_map/${window.innerWidth < 800 ? 'mobile' : 'desktop'}/tile_${index}.jpg`
-    const filePath = `/image_map/desktop/tile_${index}.jpg`
+    const filePath = `/image_map/v2/desktop/tile_${index}.jpg`
 
     return { name, filePath }
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { navigate } from 'gatsby'
 import { connect } from 'react-redux'
-import Helpers from '../helpers'
+import { formatPrice } from '../helpers'
 import styles from './shopProduct.module.scss'
 
 const mapStateToProps = state => {
@@ -94,7 +94,7 @@ class ShopProduct extends React.Component {
     const product = this.props.product
 
     let price = this.state.selectedVariant ? this.state.selectedVariant.price : product.priceRange.minVariantPrice.amount
-        price = Helpers.formatPrice(price)
+        price = formatPrice(price)
 
     return (
       <div className={styles.product}>

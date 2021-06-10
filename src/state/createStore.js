@@ -1,6 +1,7 @@
 import { createStore as reduxCreateStore } from 'redux'
 
 // actions
+const SET_IS_TOUCH = 'SET_IS_TOUCH'
 const CLIENT_CREATED = 'CLIENT_CREATED'
 const PRODUCTS_FOUND = 'PRODUCTS_FOUND'
 const CHECKOUT_FOUND = 'CHECKOUT_FOUND'
@@ -14,6 +15,8 @@ const CREATE_PIXI_LOADER = 'CREATE_PIXI_LOADER'
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case SET_IS_TOUCH:
+      return {...state, isTouch: action.payload}
     case CLIENT_CREATED:
       return {...state, client: action.payload}
     case PRODUCTS_FOUND:
@@ -40,6 +43,7 @@ const reducer = (state, action) => {
 }
 
 const initialState = {
+  isTouch: false,
   checkout: {
     lineItems: []
   },

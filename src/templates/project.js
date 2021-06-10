@@ -30,7 +30,7 @@ const ProjectTemplate = ({ data }) => {
     const handleScroll = () => {
       const scrollY = getScrollY()
       let p = scrollY / (document.body.scrollHeight - window.innerHeight)
-          p = parseFloat(p.toFixed(5))
+          p = parseFloat(p.toFixed(5)) 
 
       setScrollProgress(p)
     };

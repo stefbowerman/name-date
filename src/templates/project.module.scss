@@ -1,7 +1,16 @@
+.scroller {
+  body:global(.is-touch) & {
+    display: none;
+  }
+}
+
 .projectWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;  
   width: 100%;
-  padding: 25px 0;
   height: 100vh;
+  padding: 25px 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -39,8 +48,13 @@
   height: 50vh;
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+
+  body:global(.is-touch) & {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
 
   // This hides the scrollbar
   margin-bottom: -20px;
@@ -90,6 +104,13 @@
   right: 0;
   bottom: 0;
   height: 100%;
+
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+}
+
+.isLoaded {
+  opacity: 1;
 }
 
 .projectCopy {

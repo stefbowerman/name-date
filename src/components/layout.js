@@ -14,16 +14,14 @@ import AudioPlayer from './audioPlayer'
 import base from '../styles/base.scss'
 
 const mapStateToProps = state => {
-  const props = {
-    checkout: state.checkout,
-    audioShouldBePlaying: state.audioShouldBePlaying
+  return {
+    checkout: state.checkout
   }
-
-  return props
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    setIsTouch: (data) => dispatch({ type: 'SET_IS_TOUCH', payload: data }),
     clientCreate: (data) => dispatch({ type: 'CLIENT_CREATED', payload: data }),
     checkoutCreate: (data) => dispatch({ type: 'CHECKOUT_FOUND', payload: data }),
     createPixiLoader: (data) => dispatch({ type: 'CREATE_PIXI_LOADER', payload: data })
@@ -34,7 +32,7 @@ const Layout = ({
   location,
   children,
   checkout,
-  audioShouldBePlaying,
+  setIsTouch,
   clientCreate,
   checkoutCreate,
   createPixiLoader
@@ -84,6 +82,16 @@ const Layout = ({
     clientCreate(client);
     initializeCheckout(client)
     createPixiLoader(pixiLoader)
+
+    const isTouch = (('ontouchstart' in window) ||
+                     (navigator.maxTouchPoints > 0) ||
+                     (navigator.msMaxTouchPoints > 0))
+
+    if (isTouch) {
+      document.body.classList.add('is-touch')
+    }
+
+    setIsTouch(isTouch)
   }, [])
   
   const currentPath = location.pathname.replace(/^\/+|\/+$/g, ''); // Remove any leading or trailing slashs

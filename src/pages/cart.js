@@ -3,7 +3,7 @@ import { graphql, navigate } from 'gatsby'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
-import Helpers from '../helpers'
+import { formatPrice } from '../helpers'
 import styles from './cart.module.scss'
 
 const mapStateToProps = state => {
@@ -90,7 +90,7 @@ class CartPage extends React.Component {
                               </div>
                               <div style={ {flex: 1, padding: '0 20px'}}>
                                 <div style={ {fontWeight: 'bold', textTransform: 'uppercase'} }>{lineItem.title}</div>
-                                { Helpers.formatPrice(lineItem.variant.price) }
+                                { formatPrice(lineItem.variant.price) }
                                 { lineItem.quantity > 1 && <div>Qty: {lineItem.quantity}</div>}
                                 { lineItem.variant.selectedOptions.map((option, i) => {
                                   return (

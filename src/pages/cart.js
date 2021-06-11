@@ -105,7 +105,7 @@ class CartPage extends React.Component {
                       })}
                     </div>
                     <div>
-                      <a href={this.props.checkout.webUrl} className="button" style={ {width: '100%'} }>{Helpers.formatPrice(lineItemsSubtotalPriceAmount)}  &nbsp; &ndash; &nbsp;  Checkout</a>
+                      <a href={this.props.checkout.webUrl} className="button" style={ {width: '100%'} }>{formatPrice(lineItemsSubtotalPriceAmount)}  &nbsp; &ndash; &nbsp;  Checkout</a>
                     </div>
                   </div>
                   :

@@ -39,6 +39,7 @@ class ImageMap extends React.Component {
     this.loader = null
     this.tiles = []
     this.elRef = React.createRef()
+    this.mounted = false
 
     this.handleResize = this.handleResize.bind(this)
     this.handleViewportDragStart = this.handleViewportDragStart.bind(this)
@@ -47,6 +48,8 @@ class ImageMap extends React.Component {
   }
 
   componentDidMount() {
+    this.mounted = true
+
     // If we're on a mobile device, update the variables for the mobile map
     if (window.innerWidth < 800) {
       // boxHeight = 1405
@@ -83,6 +86,7 @@ class ImageMap extends React.Component {
     this.handleMoved.cancel()
     document.body.style.overflow = ''
     window.removeEventListener('resize', this.handleResize)
+    this.mounted = false
   }  
 
   createPixiApp() {
@@ -193,6 +197,8 @@ class ImageMap extends React.Component {
   }
 
   onLoaderComplete() {
+    if (!this.mounted) return // @TODO - this is messy...
+
     this.tiles = totalBoxCountArray.map((_, i) => {
       return this.createAndPlaceMapTile(i)
     });
@@ -202,7 +208,6 @@ class ImageMap extends React.Component {
 
   onImageMapReady() {
     this.handleResize()
-
     setTimeout(this.props.onImageMapReady, 200) // Give it a sec (or 0.2) for the image map to settle down
   }
 
@@ -277,7 +282,7 @@ class ImageMap extends React.Component {
   }
 
   handleResize() {
-    this.app && this.app.resize(); // knows to resize to the window via the resizeTo param
+    this.app && this.app.resize && this.app.resize(); // knows to resize to the window via the resizeTo param
     this.viewport && this.viewport.resize(window.innerWidth, window.innerHeight, worldWidth, worldHeight)
     this.setTileVisibility()
   }

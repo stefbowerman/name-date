@@ -21,6 +21,10 @@ class ImageMapBlocker extends React.Component {
     this.setProgress()
   }
 
+  componentWillUnmount() {
+    gsap.killTweensOf(this)
+  }
+
   setProgress() {
     gsap.to(this, {
       tweenProgress: Math.ceil(this.props.progress),
